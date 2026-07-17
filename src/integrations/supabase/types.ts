@@ -14,7 +14,267 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      bishops: {
+        Row: {
+          bio: string | null
+          counselor_1: string | null
+          counselor_2: string | null
+          end_date: string | null
+          id: string
+          name: string
+          order_index: number
+          photo_url: string | null
+          start_date: string
+        }
+        Insert: {
+          bio?: string | null
+          counselor_1?: string | null
+          counselor_2?: string | null
+          end_date?: string | null
+          id?: string
+          name: string
+          order_index?: number
+          photo_url?: string | null
+          start_date: string
+        }
+        Update: {
+          bio?: string | null
+          counselor_1?: string | null
+          counselor_2?: string | null
+          end_date?: string | null
+          id?: string
+          name?: string
+          order_index?: number
+          photo_url?: string | null
+          start_date?: string
+        }
+        Relationships: []
+      }
+      events: {
+        Row: {
+          category: Database["public"]["Enums"]["event_category"]
+          cover_image_url: string | null
+          created_at: string
+          description: string | null
+          documents: Json
+          event_date: string
+          gallery: Json
+          id: string
+          is_new_chapter: boolean
+          testimony: string | null
+          title: string
+          year: number
+        }
+        Insert: {
+          category?: Database["public"]["Enums"]["event_category"]
+          cover_image_url?: string | null
+          created_at?: string
+          description?: string | null
+          documents?: Json
+          event_date: string
+          gallery?: Json
+          id?: string
+          is_new_chapter?: boolean
+          testimony?: string | null
+          title: string
+          year: number
+        }
+        Update: {
+          category?: Database["public"]["Enums"]["event_category"]
+          cover_image_url?: string | null
+          created_at?: string
+          description?: string | null
+          documents?: Json
+          event_date?: string
+          gallery?: Json
+          id?: string
+          is_new_chapter?: boolean
+          testimony?: string | null
+          title?: string
+          year?: number
+        }
+        Relationships: []
+      }
+      faith_stories: {
+        Row: {
+          author: string
+          created_at: string
+          event_date: string | null
+          id: string
+          photo_url: string | null
+          story: string
+          title: string
+        }
+        Insert: {
+          author: string
+          created_at?: string
+          event_date?: string | null
+          id?: string
+          photo_url?: string | null
+          story: string
+          title: string
+        }
+        Update: {
+          author?: string
+          created_at?: string
+          event_date?: string | null
+          id?: string
+          photo_url?: string | null
+          story?: string
+          title?: string
+        }
+        Relationships: []
+      }
+      gallery_photos: {
+        Row: {
+          caption: string | null
+          category: Database["public"]["Enums"]["event_category"] | null
+          id: string
+          image_url: string
+          photo_date: string | null
+          title: string | null
+          year: number | null
+        }
+        Insert: {
+          caption?: string | null
+          category?: Database["public"]["Enums"]["event_category"] | null
+          id?: string
+          image_url: string
+          photo_date?: string | null
+          title?: string | null
+          year?: number | null
+        }
+        Update: {
+          caption?: string | null
+          category?: Database["public"]["Enums"]["event_category"] | null
+          id?: string
+          image_url?: string
+          photo_date?: string | null
+          title?: string | null
+          year?: number | null
+        }
+        Relationships: []
+      }
+      historical_documents: {
+        Row: {
+          description: string | null
+          document_date: string | null
+          document_url: string | null
+          id: string
+          thumbnail_url: string | null
+          title: string
+          year: number | null
+        }
+        Insert: {
+          description?: string | null
+          document_date?: string | null
+          document_url?: string | null
+          id?: string
+          thumbnail_url?: string | null
+          title: string
+          year?: number | null
+        }
+        Update: {
+          description?: string | null
+          document_date?: string | null
+          document_url?: string | null
+          id?: string
+          thumbnail_url?: string | null
+          title?: string
+          year?: number | null
+        }
+        Relationships: []
+      }
+      interviews: {
+        Row: {
+          event_date: string | null
+          id: string
+          person: string | null
+          summary: string | null
+          thumbnail_url: string | null
+          title: string
+          video_url: string | null
+        }
+        Insert: {
+          event_date?: string | null
+          id?: string
+          person?: string | null
+          summary?: string | null
+          thumbnail_url?: string | null
+          title: string
+          video_url?: string | null
+        }
+        Update: {
+          event_date?: string | null
+          id?: string
+          person?: string | null
+          summary?: string | null
+          thumbnail_url?: string | null
+          title?: string
+          video_url?: string | null
+        }
+        Relationships: []
+      }
+      organizations: {
+        Row: {
+          current_leader: string | null
+          history: string | null
+          id: string
+          name: string
+          order_index: number
+          photo_url: string | null
+          short_description: string | null
+          slug: string
+        }
+        Insert: {
+          current_leader?: string | null
+          history?: string | null
+          id?: string
+          name: string
+          order_index?: number
+          photo_url?: string | null
+          short_description?: string | null
+          slug: string
+        }
+        Update: {
+          current_leader?: string | null
+          history?: string | null
+          id?: string
+          name?: string
+          order_index?: number
+          photo_url?: string | null
+          short_description?: string | null
+          slug?: string
+        }
+        Relationships: []
+      }
+      pioneers: {
+        Row: {
+          id: string
+          name: string
+          order_index: number
+          photo_url: string | null
+          tribute: string | null
+          years: string | null
+        }
+        Insert: {
+          id?: string
+          name: string
+          order_index?: number
+          photo_url?: string | null
+          tribute?: string | null
+          years?: string | null
+        }
+        Update: {
+          id?: string
+          name?: string
+          order_index?: number
+          photo_url?: string | null
+          tribute?: string | null
+          years?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -23,7 +283,18 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      event_category:
+        | "hito"
+        | "liderazgo"
+        | "sociedad_socorro"
+        | "primaria"
+        | "hombres_jovenes"
+        | "mujeres_jovenes"
+        | "escuela_dominical"
+        | "elderes"
+        | "servicio"
+        | "actividad"
+        | "general"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +421,20 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      event_category: [
+        "hito",
+        "liderazgo",
+        "sociedad_socorro",
+        "primaria",
+        "hombres_jovenes",
+        "mujeres_jovenes",
+        "escuela_dominical",
+        "elderes",
+        "servicio",
+        "actividad",
+        "general",
+      ],
+    },
   },
 } as const
