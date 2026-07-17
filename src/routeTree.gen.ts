@@ -9,8 +9,74 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as VideosRouteImport } from './routes/videos'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
+import { Route as PionerosRouteImport } from './routes/pioneros'
+import { Route as OrganizacionesRouteImport } from './routes/organizaciones'
+import { Route as ObisposRouteImport } from './routes/obispos'
+import { Route as NuevasActividadesRouteImport } from './routes/nuevas-actividades'
+import { Route as LineaTiempoRouteImport } from './routes/linea-tiempo'
+import { Route as HistoriasRouteImport } from './routes/historias'
+import { Route as HistoriaRouteImport } from './routes/historia'
+import { Route as GaleriaRouteImport } from './routes/galeria'
+import { Route as DocumentosRouteImport } from './routes/documentos'
 import { Route as IndexRouteImport } from './routes/index'
 
+const VideosRoute = VideosRouteImport.update({
+  id: '/videos',
+  path: '/videos',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PionerosRoute = PionerosRouteImport.update({
+  id: '/pioneros',
+  path: '/pioneros',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OrganizacionesRoute = OrganizacionesRouteImport.update({
+  id: '/organizaciones',
+  path: '/organizaciones',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ObisposRoute = ObisposRouteImport.update({
+  id: '/obispos',
+  path: '/obispos',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NuevasActividadesRoute = NuevasActividadesRouteImport.update({
+  id: '/nuevas-actividades',
+  path: '/nuevas-actividades',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LineaTiempoRoute = LineaTiempoRouteImport.update({
+  id: '/linea-tiempo',
+  path: '/linea-tiempo',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HistoriasRoute = HistoriasRouteImport.update({
+  id: '/historias',
+  path: '/historias',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HistoriaRoute = HistoriaRouteImport.update({
+  id: '/historia',
+  path: '/historia',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GaleriaRoute = GaleriaRouteImport.update({
+  id: '/galeria',
+  path: '/galeria',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DocumentosRoute = DocumentosRouteImport.update({
+  id: '/documentos',
+  path: '/documentos',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -19,28 +85,186 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/documentos': typeof DocumentosRoute
+  '/galeria': typeof GaleriaRoute
+  '/historia': typeof HistoriaRoute
+  '/historias': typeof HistoriasRoute
+  '/linea-tiempo': typeof LineaTiempoRoute
+  '/nuevas-actividades': typeof NuevasActividadesRoute
+  '/obispos': typeof ObisposRoute
+  '/organizaciones': typeof OrganizacionesRoute
+  '/pioneros': typeof PionerosRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/videos': typeof VideosRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/documentos': typeof DocumentosRoute
+  '/galeria': typeof GaleriaRoute
+  '/historia': typeof HistoriaRoute
+  '/historias': typeof HistoriasRoute
+  '/linea-tiempo': typeof LineaTiempoRoute
+  '/nuevas-actividades': typeof NuevasActividadesRoute
+  '/obispos': typeof ObisposRoute
+  '/organizaciones': typeof OrganizacionesRoute
+  '/pioneros': typeof PionerosRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/videos': typeof VideosRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/documentos': typeof DocumentosRoute
+  '/galeria': typeof GaleriaRoute
+  '/historia': typeof HistoriaRoute
+  '/historias': typeof HistoriasRoute
+  '/linea-tiempo': typeof LineaTiempoRoute
+  '/nuevas-actividades': typeof NuevasActividadesRoute
+  '/obispos': typeof ObisposRoute
+  '/organizaciones': typeof OrganizacionesRoute
+  '/pioneros': typeof PionerosRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/videos': typeof VideosRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/documentos'
+    | '/galeria'
+    | '/historia'
+    | '/historias'
+    | '/linea-tiempo'
+    | '/nuevas-actividades'
+    | '/obispos'
+    | '/organizaciones'
+    | '/pioneros'
+    | '/sitemap.xml'
+    | '/videos'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/documentos'
+    | '/galeria'
+    | '/historia'
+    | '/historias'
+    | '/linea-tiempo'
+    | '/nuevas-actividades'
+    | '/obispos'
+    | '/organizaciones'
+    | '/pioneros'
+    | '/sitemap.xml'
+    | '/videos'
+  id:
+    | '__root__'
+    | '/'
+    | '/documentos'
+    | '/galeria'
+    | '/historia'
+    | '/historias'
+    | '/linea-tiempo'
+    | '/nuevas-actividades'
+    | '/obispos'
+    | '/organizaciones'
+    | '/pioneros'
+    | '/sitemap.xml'
+    | '/videos'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  DocumentosRoute: typeof DocumentosRoute
+  GaleriaRoute: typeof GaleriaRoute
+  HistoriaRoute: typeof HistoriaRoute
+  HistoriasRoute: typeof HistoriasRoute
+  LineaTiempoRoute: typeof LineaTiempoRoute
+  NuevasActividadesRoute: typeof NuevasActividadesRoute
+  ObisposRoute: typeof ObisposRoute
+  OrganizacionesRoute: typeof OrganizacionesRoute
+  PionerosRoute: typeof PionerosRoute
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
+  VideosRoute: typeof VideosRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/videos': {
+      id: '/videos'
+      path: '/videos'
+      fullPath: '/videos'
+      preLoaderRoute: typeof VideosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/pioneros': {
+      id: '/pioneros'
+      path: '/pioneros'
+      fullPath: '/pioneros'
+      preLoaderRoute: typeof PionerosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/organizaciones': {
+      id: '/organizaciones'
+      path: '/organizaciones'
+      fullPath: '/organizaciones'
+      preLoaderRoute: typeof OrganizacionesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/obispos': {
+      id: '/obispos'
+      path: '/obispos'
+      fullPath: '/obispos'
+      preLoaderRoute: typeof ObisposRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/nuevas-actividades': {
+      id: '/nuevas-actividades'
+      path: '/nuevas-actividades'
+      fullPath: '/nuevas-actividades'
+      preLoaderRoute: typeof NuevasActividadesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/linea-tiempo': {
+      id: '/linea-tiempo'
+      path: '/linea-tiempo'
+      fullPath: '/linea-tiempo'
+      preLoaderRoute: typeof LineaTiempoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/historias': {
+      id: '/historias'
+      path: '/historias'
+      fullPath: '/historias'
+      preLoaderRoute: typeof HistoriasRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/historia': {
+      id: '/historia'
+      path: '/historia'
+      fullPath: '/historia'
+      preLoaderRoute: typeof HistoriaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/galeria': {
+      id: '/galeria'
+      path: '/galeria'
+      fullPath: '/galeria'
+      preLoaderRoute: typeof GaleriaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/documentos': {
+      id: '/documentos'
+      path: '/documentos'
+      fullPath: '/documentos'
+      preLoaderRoute: typeof DocumentosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -53,6 +277,17 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  DocumentosRoute: DocumentosRoute,
+  GaleriaRoute: GaleriaRoute,
+  HistoriaRoute: HistoriaRoute,
+  HistoriasRoute: HistoriasRoute,
+  LineaTiempoRoute: LineaTiempoRoute,
+  NuevasActividadesRoute: NuevasActividadesRoute,
+  ObisposRoute: ObisposRoute,
+  OrganizacionesRoute: OrganizacionesRoute,
+  PionerosRoute: PionerosRoute,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
+  VideosRoute: VideosRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
