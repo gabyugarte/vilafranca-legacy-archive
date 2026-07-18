@@ -19,6 +19,7 @@ const NAV = [
 
 export function SiteHeader() {
   const [open, setOpen] = useState(false);
+  const { session } = useSession();
 
   return (
     <header className="sticky top-0 z-40 border-b border-border/60 bg-background/85 backdrop-blur-lg">
@@ -51,13 +52,23 @@ export function SiteHeader() {
           ))}
         </nav>
 
-        <button
-          onClick={() => setOpen((v) => !v)}
-          className="grid h-10 w-10 shrink-0 place-items-center rounded-full border border-border xl:hidden"
-          aria-label="Abrir menú"
-        >
-          {open ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
-        </button>
+        <div className="flex items-center gap-2">
+          <Link
+            to={session ? "/admin" : "/auth"}
+            className="hidden items-center gap-1.5 rounded-full border border-border px-3 py-2 text-xs text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground sm:inline-flex"
+            title={session ? "Panel de administración" : "Acceder"}
+          >
+            <Lock className="h-3.5 w-3.5" />
+            {session ? "Admin" : "Acceso"}
+          </Link>
+          <button
+            onClick={() => setOpen((v) => !v)}
+            className="grid h-10 w-10 shrink-0 place-items-center rounded-full border border-border xl:hidden"
+            aria-label="Abrir menú"
+          >
+            {open ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
+          </button>
+        </div>
       </div>
 
       {open && (
