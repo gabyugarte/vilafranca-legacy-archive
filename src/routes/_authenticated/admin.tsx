@@ -244,8 +244,8 @@ function EventModal({
       is_new_chapter: !!form.is_new_chapter,
     };
     const q = form.id
-      ? supabase.from("events").update(payload).eq("id", form.id)
-      : supabase.from("events").insert(payload);
+      ? supabase.from("events").update(payload as never).eq("id", form.id)
+      : supabase.from("events").insert(payload as never);
     const { error } = await q;
     setSaving(false);
     if (error) setErr(error.message);
@@ -439,8 +439,8 @@ function PhotoModal({
       category: form.category || null,
     };
     const q = form.id
-      ? supabase.from("gallery_photos").update(payload).eq("id", form.id)
-      : supabase.from("gallery_photos").insert(payload);
+      ? supabase.from("gallery_photos").update(payload as never).eq("id", form.id)
+      : supabase.from("gallery_photos").insert(payload as never);
     const { error } = await q;
     setSaving(false);
     if (error) setErr(error.message);
