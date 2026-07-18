@@ -53,14 +53,21 @@ export function SiteHeader() {
         </nav>
 
         <div className="flex items-center gap-2">
-          <Link
-            to={session ? "/admin" : "/auth"}
-            className="hidden items-center gap-1.5 rounded-full border border-border px-3 py-2 text-xs text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground sm:inline-flex"
-            title={session ? "Panel de administración" : "Acceder"}
-          >
-            <Lock className="h-3.5 w-3.5" />
-            {session ? "Admin" : "Acceso"}
-          </Link>
+          {session ? (
+            <Link
+              to="/admin"
+              className="hidden items-center gap-1.5 rounded-full border border-border px-3 py-2 text-xs text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground sm:inline-flex"
+            >
+              <Lock className="h-3.5 w-3.5" /> Admin
+            </Link>
+          ) : (
+            <Link
+              to="/auth"
+              className="hidden items-center gap-1.5 rounded-full border border-border px-3 py-2 text-xs text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground sm:inline-flex"
+            >
+              <Lock className="h-3.5 w-3.5" /> Acceso
+            </Link>
+          )}
           <button
             onClick={() => setOpen((v) => !v)}
             className="grid h-10 w-10 shrink-0 place-items-center rounded-full border border-border xl:hidden"
