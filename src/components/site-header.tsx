@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { useState } from "react";
-import { Menu, X, Lock } from "lucide-react";
+import { Menu, X, Lock, Heart } from "lucide-react";
 import { useSession } from "@/lib/use-session";
 
 const NAV = [
