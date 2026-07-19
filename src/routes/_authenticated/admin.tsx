@@ -22,7 +22,7 @@ type Tab = "moderacion" | "eventos" | "galeria";
 function AdminPage() {
   const navigate = useNavigate();
   const { isAdmin, session, loading } = useIsAdmin();
-  const [tab, setTab] = useState<Tab>("eventos");
+  const [tab, setTab] = useState<Tab>("moderacion");
 
   useEffect(() => {
     if (!loading && !session) navigate({ to: "/auth" });
