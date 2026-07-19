@@ -70,13 +70,13 @@ function AdminPage() {
       <section className="mx-auto max-w-6xl px-4 pb-20 sm:px-6">
         <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
           <div className="inline-flex gap-1 rounded-full bg-muted p-1 text-sm">
-            {(["eventos", "galeria"] as Tab[]).map((t) => (
+            {(["moderacion", "eventos", "galeria"] as Tab[]).map((t) => (
               <button
                 key={t}
                 onClick={() => setTab(t)}
                 className={`rounded-full px-4 py-1.5 transition ${tab === t ? "bg-background shadow-soft text-foreground" : "text-muted-foreground"}`}
               >
-                {t === "eventos" ? "Eventos" : "Galería"}
+                {t === "moderacion" ? "Moderación" : t === "eventos" ? "Eventos" : "Galería"}
               </button>
             ))}
           </div>
@@ -88,7 +88,7 @@ function AdminPage() {
           </button>
         </div>
 
-        {tab === "eventos" ? <EventsAdmin /> : <GalleryAdmin />}
+        {tab === "moderacion" ? <ModerationPanel /> : tab === "eventos" ? <EventsAdmin /> : <GalleryAdmin />}
       </section>
     </>
   );
