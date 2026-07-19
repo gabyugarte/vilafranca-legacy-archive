@@ -17,12 +17,12 @@ export const Route = createFileRoute("/_authenticated/admin")({
   component: AdminPage,
 });
 
-type Tab = "eventos" | "galeria";
+type Tab = "moderacion" | "eventos" | "galeria";
 
 function AdminPage() {
   const navigate = useNavigate();
   const { isAdmin, session, loading } = useIsAdmin();
-  const [tab, setTab] = useState<Tab>("eventos");
+  const [tab, setTab] = useState<Tab>("moderacion");
 
   useEffect(() => {
     if (!loading && !session) navigate({ to: "/auth" });
@@ -70,13 +70,13 @@ function AdminPage() {
       <section className="mx-auto max-w-6xl px-4 pb-20 sm:px-6">
         <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
           <div className="inline-flex gap-1 rounded-full bg-muted p-1 text-sm">
-            {(["eventos", "galeria"] as Tab[]).map((t) => (
+            {(["moderacion", "eventos", "galeria"] as Tab[]).map((t) => (
               <button
                 key={t}
                 onClick={() => setTab(t)}
                 className={`rounded-full px-4 py-1.5 transition ${tab === t ? "bg-background shadow-soft text-foreground" : "text-muted-foreground"}`}
               >
-                {t === "eventos" ? "Eventos" : "Galería"}
+                {t === "moderacion" ? "Moderación" : t === "eventos" ? "Eventos" : "Galería"}
               </button>
             ))}
           </div>
@@ -88,7 +88,7 @@ function AdminPage() {
           </button>
         </div>
 
-        {tab === "eventos" ? <EventsAdmin /> : <GalleryAdmin />}
+        {tab === "moderacion" ? <ModerationPanel /> : tab === "eventos" ? <EventsAdmin /> : <GalleryAdmin />}
       </section>
     </>
   );
@@ -582,6 +582,132 @@ function ImageUploader({ value, onChange }: { value: string; onChange: (url: str
         className={inputCls}
       />
       {err && <p className="text-sm text-destructive">{err}</p>}
+    </div>
+  );
+}
+
+/* -------------------- MODERATION -------------------- */
+
+const MOD_TABLES = [
+  { key: "gallery_photos", label: "Fotografía", titleCol: "title", extraCol: "caption", imgCol: "image_url" },
+  { key: "faith_stories", label: "Historia de fe", titleCol: "title", extraCol: "story", imgCol: "photo_url" },
+  { key: "historical_documents", label: "Documento", titleCol: "title", extraCol: "description", imgCol: "thumbnail_url" },
+  { key: "interviews", label: "Entrevista", titleCol: "title", extraCol: "summary", imgCol: "thumbnail_url" },
+  { key: "events", label: "Evento", titleCol: "title", extraCol: "description", imgCol: "cover_image_url" },
+] as const;
+
+type PendingItem = {
+  table: (typeof MOD_TABLES)[number]["key"];
+  kind: string;
+  id: string;
+  title: string;
+  extra: string | null;
+  image: string | null;
+  submittedBy: string | null;
+  createdAt: string;
+};
+
+function ModerationPanel() {
+  const qc = useQueryClient();
+  const { data, isLoading } = useQuery({
+    queryKey: ["admin", "moderation"],
+    queryFn: async (): Promise<PendingItem[]> => {
+      const rows = await Promise.all(
+        MOD_TABLES.map(async (t) => {
+          const { data, error } = await supabase
+            .from(t.key)
+            .select(`id, created_at, submitted_by, ${t.titleCol}, ${t.extraCol}, ${t.imgCol}`)
+            .eq("status", "pending")
+            .order("created_at", { ascending: false });
+          if (error) return [] as PendingItem[];
+          return (data ?? []).map((r: any) => ({
+            table: t.key,
+            kind: t.label,
+            id: r.id,
+            title: r[t.titleCol] ?? "(sin título)",
+            extra: r[t.extraCol] ?? null,
+            image: r[t.imgCol] ?? null,
+            submittedBy: r.submitted_by ?? null,
+            createdAt: r.created_at,
+          }));
+        }),
+      );
+      return rows.flat().sort((a, b) => (a.createdAt < b.createdAt ? 1 : -1));
+    },
+  });
+
+  async function decide(item: PendingItem, status: "approved" | "rejected") {
+    const { error } = await supabase.from(item.table).update({ status } as never).eq("id", item.id);
+    if (error) return alert(error.message);
+    qc.invalidateQueries({ queryKey: ["admin", "moderation"] });
+    qc.invalidateQueries({ queryKey: [item.table === "gallery_photos" ? "gallery" : item.table === "faith_stories" ? "stories" : item.table === "historical_documents" ? "documents" : item.table === "interviews" ? "interviews" : "events"] });
+  }
+
+  async function remove(item: PendingItem) {
+    if (!confirm("¿Eliminar definitivamente esta aportación?")) return;
+    const { error } = await supabase.from(item.table).delete().eq("id", item.id);
+    if (error) return alert(error.message);
+    qc.invalidateQueries({ queryKey: ["admin", "moderation"] });
+  }
+
+  if (isLoading) {
+    return <div className="grid place-items-center py-10"><Loader2 className="h-5 w-5 animate-spin" /></div>;
+  }
+
+  if (!data?.length) {
+    return (
+      <div className="rounded-2xl border border-dashed border-border p-10 text-center text-muted-foreground">
+        No hay aportaciones pendientes de revisión. ✨
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-3">
+      <p className="text-sm text-muted-foreground">
+        {data.length} aportación{data.length === 1 ? "" : "es"} en espera. Aprueba para publicar o rechaza para ocultar.
+      </p>
+      {data.map((item) => (
+        <article key={`${item.table}-${item.id}`} className="rounded-2xl border border-border bg-card p-4 shadow-soft">
+          <div className="flex flex-wrap gap-4">
+            {item.image && (
+              <img src={item.image} alt="" className="h-24 w-32 shrink-0 rounded-lg border border-border object-cover" />
+            )}
+            <div className="min-w-0 flex-1">
+              <div className="flex flex-wrap items-center gap-2 text-xs">
+                <span className="rounded-full bg-secondary px-2 py-0.5 text-secondary-foreground">{item.kind}</span>
+                <time className="text-muted-foreground">
+                  {new Date(item.createdAt).toLocaleString("es-ES")}
+                </time>
+              </div>
+              <h3 className="mt-1 font-display text-lg text-foreground">{item.title}</h3>
+              {item.extra && (
+                <p className="mt-1 line-clamp-3 text-sm text-muted-foreground">{item.extra}</p>
+              )}
+            </div>
+            <div className="flex shrink-0 flex-col gap-2">
+              <button
+                onClick={() => decide(item, "approved")}
+                className="rounded-full bg-primary px-4 py-1.5 text-sm text-primary-foreground shadow-soft hover:opacity-90"
+              >
+                Aprobar
+              </button>
+              <button
+                onClick={() => decide(item, "rejected")}
+                className="rounded-full border border-border px-4 py-1.5 text-sm hover:bg-secondary"
+              >
+                Rechazar
+              </button>
+              <button
+                onClick={() => remove(item)}
+                className="rounded-full px-4 py-1.5 text-xs text-destructive hover:bg-destructive/10"
+              >
+                Eliminar
+              </button>
+            </div>
+          </div>
+        </article>
+      ))}
     </div>
   );
 }

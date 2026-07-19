@@ -1,8 +1,8 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { PageHeader } from "@/components/page-header";
 import { eventsQuery, CATEGORY_LABELS } from "@/lib/queries.functions";
-import { Sparkles, Mail } from "lucide-react";
+import { Sparkles, Heart } from "lucide-react";
 
 export const Route = createFileRoute("/nuevas-actividades")({
   loader: ({ context }) => context.queryClient.ensureQueryData(eventsQuery),
@@ -53,10 +53,13 @@ function NewActivitiesPage() {
             experiencia especial, un nuevo llamamiento, un bautismo, una
             conferencia… Todo tiene su lugar en este archivo.
           </p>
-          <div className="mt-6 inline-flex items-center gap-2 rounded-full bg-foreground px-5 py-3 text-sm font-medium text-background">
-            <Mail className="h-4 w-4" />
-            Contacta con el coordinador del archivo del barrio
-          </div>
+          <Link
+            to="/aportar"
+            className="mt-6 inline-flex items-center gap-2 rounded-full bg-foreground px-5 py-3 text-sm font-medium text-background transition hover:opacity-90"
+          >
+            <Heart className="h-4 w-4" />
+            Aportar al archivo del barrio
+          </Link>
         </div>
 
         <div className="mt-16">
