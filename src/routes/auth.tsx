@@ -25,7 +25,7 @@ function AuthPage() {
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
-      if (data.session) navigate({ to: "/admin" });
+      if (data.session) navigate({ to: "/aportar" });
     });
   }, [navigate]);
 
@@ -38,15 +38,15 @@ function AuthPage() {
       if (mode === "signin") {
         const { error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
-        navigate({ to: "/admin" });
+        navigate({ to: "/aportar" });
       } else {
         const { data, error } = await supabase.auth.signUp({
           email,
           password,
-          options: { emailRedirectTo: window.location.origin + "/admin" },
+          options: { emailRedirectTo: window.location.origin + "/aportar" },
         });
         if (error) throw error;
-        if (data.session) navigate({ to: "/admin" });
+        if (data.session) navigate({ to: "/aportar" });
         else setMsg("Cuenta creada. Revisa tu correo para confirmar el acceso.");
       }
     } catch (e: any) {
