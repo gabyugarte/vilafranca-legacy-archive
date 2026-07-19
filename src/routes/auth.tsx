@@ -60,8 +60,8 @@ function AuthPage() {
     <>
       <PageHeader
         eyebrow="Acceso"
-        title="Panel de administración"
-        description="Este espacio es para las personas encargadas de custodiar y ampliar el archivo del barrio."
+        title="Únete al archivo del barrio"
+        description="Crea una cuenta para compartir fotografías, historias, documentos o vídeos. Todo lo que envíes pasará por revisión antes de publicarse en el museo."
       />
       <section className="mx-auto max-w-md px-4 pb-20 sm:px-6">
         <form
