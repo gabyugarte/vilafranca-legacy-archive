@@ -61,6 +61,8 @@ export type Database = {
           gallery: Json
           id: string
           is_new_chapter: boolean
+          status: Database["public"]["Enums"]["content_status"]
+          submitted_by: string | null
           testimony: string | null
           title: string
           year: number
@@ -75,6 +77,8 @@ export type Database = {
           gallery?: Json
           id?: string
           is_new_chapter?: boolean
+          status?: Database["public"]["Enums"]["content_status"]
+          submitted_by?: string | null
           testimony?: string | null
           title: string
           year: number
@@ -89,6 +93,8 @@ export type Database = {
           gallery?: Json
           id?: string
           is_new_chapter?: boolean
+          status?: Database["public"]["Enums"]["content_status"]
+          submitted_by?: string | null
           testimony?: string | null
           title?: string
           year?: number
@@ -102,7 +108,9 @@ export type Database = {
           event_date: string | null
           id: string
           photo_url: string | null
+          status: Database["public"]["Enums"]["content_status"]
           story: string
+          submitted_by: string | null
           title: string
         }
         Insert: {
@@ -111,7 +119,9 @@ export type Database = {
           event_date?: string | null
           id?: string
           photo_url?: string | null
+          status?: Database["public"]["Enums"]["content_status"]
           story: string
+          submitted_by?: string | null
           title: string
         }
         Update: {
@@ -120,7 +130,9 @@ export type Database = {
           event_date?: string | null
           id?: string
           photo_url?: string | null
+          status?: Database["public"]["Enums"]["content_status"]
           story?: string
+          submitted_by?: string | null
           title?: string
         }
         Relationships: []
@@ -132,6 +144,8 @@ export type Database = {
           id: string
           image_url: string
           photo_date: string | null
+          status: Database["public"]["Enums"]["content_status"]
+          submitted_by: string | null
           title: string | null
           year: number | null
         }
@@ -141,6 +155,8 @@ export type Database = {
           id?: string
           image_url: string
           photo_date?: string | null
+          status?: Database["public"]["Enums"]["content_status"]
+          submitted_by?: string | null
           title?: string | null
           year?: number | null
         }
@@ -150,6 +166,8 @@ export type Database = {
           id?: string
           image_url?: string
           photo_date?: string | null
+          status?: Database["public"]["Enums"]["content_status"]
+          submitted_by?: string | null
           title?: string | null
           year?: number | null
         }
@@ -161,6 +179,8 @@ export type Database = {
           document_date: string | null
           document_url: string | null
           id: string
+          status: Database["public"]["Enums"]["content_status"]
+          submitted_by: string | null
           thumbnail_url: string | null
           title: string
           year: number | null
@@ -170,6 +190,8 @@ export type Database = {
           document_date?: string | null
           document_url?: string | null
           id?: string
+          status?: Database["public"]["Enums"]["content_status"]
+          submitted_by?: string | null
           thumbnail_url?: string | null
           title: string
           year?: number | null
@@ -179,6 +201,8 @@ export type Database = {
           document_date?: string | null
           document_url?: string | null
           id?: string
+          status?: Database["public"]["Enums"]["content_status"]
+          submitted_by?: string | null
           thumbnail_url?: string | null
           title?: string
           year?: number | null
@@ -190,6 +214,8 @@ export type Database = {
           event_date: string | null
           id: string
           person: string | null
+          status: Database["public"]["Enums"]["content_status"]
+          submitted_by: string | null
           summary: string | null
           thumbnail_url: string | null
           title: string
@@ -199,6 +225,8 @@ export type Database = {
           event_date?: string | null
           id?: string
           person?: string | null
+          status?: Database["public"]["Enums"]["content_status"]
+          submitted_by?: string | null
           summary?: string | null
           thumbnail_url?: string | null
           title: string
@@ -208,6 +236,8 @@ export type Database = {
           event_date?: string | null
           id?: string
           person?: string | null
+          status?: Database["public"]["Enums"]["content_status"]
+          submitted_by?: string | null
           summary?: string | null
           thumbnail_url?: string | null
           title?: string
@@ -311,6 +341,7 @@ export type Database = {
     }
     Enums: {
       app_role: "admin" | "editor"
+      content_status: "pending" | "approved" | "rejected"
       event_category:
         | "hito"
         | "liderazgo"
@@ -451,6 +482,7 @@ export const Constants = {
   public: {
     Enums: {
       app_role: ["admin", "editor"],
+      content_status: ["pending", "approved", "rejected"],
       event_category: [
         "hito",
         "liderazgo",
