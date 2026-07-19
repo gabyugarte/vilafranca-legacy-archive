@@ -1,8 +1,8 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { PageHeader } from "@/components/page-header";
 import { eventsQuery, CATEGORY_LABELS } from "@/lib/queries.functions";
-import { Sparkles, Mail } from "lucide-react";
+import { Sparkles, Heart } from "lucide-react";
 
 export const Route = createFileRoute("/nuevas-actividades")({
   loader: ({ context }) => context.queryClient.ensureQueryData(eventsQuery),
