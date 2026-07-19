@@ -54,12 +54,20 @@ export function SiteHeader() {
 
         <div className="flex items-center gap-2">
           {session ? (
-            <Link
-              to="/admin"
-              className="hidden items-center gap-1.5 rounded-full border border-border px-3 py-2 text-xs text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground sm:inline-flex"
-            >
-              <Lock className="h-3.5 w-3.5" /> Admin
-            </Link>
+            <>
+              <Link
+                to="/aportar"
+                className="hidden items-center gap-1.5 rounded-full bg-primary px-3 py-2 text-xs text-primary-foreground shadow-soft transition hover:opacity-90 sm:inline-flex"
+              >
+                <Heart className="h-3.5 w-3.5" /> Aportar
+              </Link>
+              <Link
+                to="/admin"
+                className="hidden items-center gap-1.5 rounded-full border border-border px-3 py-2 text-xs text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground sm:inline-flex"
+              >
+                <Lock className="h-3.5 w-3.5" /> Admin
+              </Link>
+            </>
           ) : (
             <Link
               to="/auth"
