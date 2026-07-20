@@ -15,6 +15,7 @@ import { Route as PionerosRouteImport } from './routes/pioneros'
 import { Route as OrganizacionesRouteImport } from './routes/organizaciones'
 import { Route as ObisposRouteImport } from './routes/obispos'
 import { Route as NuevasActividadesRouteImport } from './routes/nuevas-actividades'
+import { Route as McpRouteImport } from './routes/mcp'
 import { Route as LineaTiempoRouteImport } from './routes/linea-tiempo'
 import { Route as HistoriasRouteImport } from './routes/historias'
 import { Route as HistoriaRouteImport } from './routes/historia'
@@ -25,6 +26,10 @@ import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedAportarRouteImport } from './routes/_authenticated/aportar'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
+import { Route as Char91DotwellKnownChar93OauthProtectedResourceRouteImport } from './routes/[.well-known]/oauth-protected-resource'
+import { Route as Char91DotmcpChar93ListToolsRouteImport } from './routes/[.mcp]/list-tools'
+import { Route as Char91DotmcpChar93InvokeToolToolRouteImport } from './routes/[.mcp]/invoke-tool/$tool'
+import { Route as DotlovableOauthConsentRouteImport } from './routes/[.]lovable.oauth.consent'
 
 const VideosRoute = VideosRouteImport.update({
   id: '/videos',
@@ -54,6 +59,11 @@ const ObisposRoute = ObisposRouteImport.update({
 const NuevasActividadesRoute = NuevasActividadesRouteImport.update({
   id: '/nuevas-actividades',
   path: '/nuevas-actividades',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const McpRoute = McpRouteImport.update({
+  id: '/mcp',
+  path: '/mcp',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LineaTiempoRoute = LineaTiempoRouteImport.update({
@@ -105,6 +115,29 @@ const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
   path: '/admin',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const Char91DotwellKnownChar93OauthProtectedResourceRoute =
+  Char91DotwellKnownChar93OauthProtectedResourceRouteImport.update({
+    id: '/.well-known/oauth-protected-resource',
+    path: '/.well-known/oauth-protected-resource',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const Char91DotmcpChar93ListToolsRoute =
+  Char91DotmcpChar93ListToolsRouteImport.update({
+    id: '/.mcp/list-tools',
+    path: '/.mcp/list-tools',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const Char91DotmcpChar93InvokeToolToolRoute =
+  Char91DotmcpChar93InvokeToolToolRouteImport.update({
+    id: '/.mcp/invoke-tool/$tool',
+    path: '/.mcp/invoke-tool/$tool',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const DotlovableOauthConsentRoute = DotlovableOauthConsentRouteImport.update({
+  id: '/.lovable/oauth/consent',
+  path: '/.lovable/oauth/consent',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -114,14 +147,19 @@ export interface FileRoutesByFullPath {
   '/historia': typeof HistoriaRoute
   '/historias': typeof HistoriasRoute
   '/linea-tiempo': typeof LineaTiempoRoute
+  '/mcp': typeof McpRoute
   '/nuevas-actividades': typeof NuevasActividadesRoute
   '/obispos': typeof ObisposRoute
   '/organizaciones': typeof OrganizacionesRoute
   '/pioneros': typeof PionerosRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/videos': typeof VideosRoute
+  '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
+  '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/admin': typeof AuthenticatedAdminRoute
   '/aportar': typeof AuthenticatedAportarRoute
+  '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
+  '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -131,14 +169,19 @@ export interface FileRoutesByTo {
   '/historia': typeof HistoriaRoute
   '/historias': typeof HistoriasRoute
   '/linea-tiempo': typeof LineaTiempoRoute
+  '/mcp': typeof McpRoute
   '/nuevas-actividades': typeof NuevasActividadesRoute
   '/obispos': typeof ObisposRoute
   '/organizaciones': typeof OrganizacionesRoute
   '/pioneros': typeof PionerosRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/videos': typeof VideosRoute
+  '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
+  '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/admin': typeof AuthenticatedAdminRoute
   '/aportar': typeof AuthenticatedAportarRoute
+  '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
+  '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -150,14 +193,19 @@ export interface FileRoutesById {
   '/historia': typeof HistoriaRoute
   '/historias': typeof HistoriasRoute
   '/linea-tiempo': typeof LineaTiempoRoute
+  '/mcp': typeof McpRoute
   '/nuevas-actividades': typeof NuevasActividadesRoute
   '/obispos': typeof ObisposRoute
   '/organizaciones': typeof OrganizacionesRoute
   '/pioneros': typeof PionerosRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/videos': typeof VideosRoute
+  '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
+  '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRoute
   '/_authenticated/aportar': typeof AuthenticatedAportarRoute
+  '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
+  '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -169,14 +217,19 @@ export interface FileRouteTypes {
     | '/historia'
     | '/historias'
     | '/linea-tiempo'
+    | '/mcp'
     | '/nuevas-actividades'
     | '/obispos'
     | '/organizaciones'
     | '/pioneros'
     | '/sitemap.xml'
     | '/videos'
+    | '/.mcp/list-tools'
+    | '/.well-known/oauth-protected-resource'
     | '/admin'
     | '/aportar'
+    | '/.lovable/oauth/consent'
+    | '/.mcp/invoke-tool/$tool'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -186,14 +239,19 @@ export interface FileRouteTypes {
     | '/historia'
     | '/historias'
     | '/linea-tiempo'
+    | '/mcp'
     | '/nuevas-actividades'
     | '/obispos'
     | '/organizaciones'
     | '/pioneros'
     | '/sitemap.xml'
     | '/videos'
+    | '/.mcp/list-tools'
+    | '/.well-known/oauth-protected-resource'
     | '/admin'
     | '/aportar'
+    | '/.lovable/oauth/consent'
+    | '/.mcp/invoke-tool/$tool'
   id:
     | '__root__'
     | '/'
@@ -204,14 +262,19 @@ export interface FileRouteTypes {
     | '/historia'
     | '/historias'
     | '/linea-tiempo'
+    | '/mcp'
     | '/nuevas-actividades'
     | '/obispos'
     | '/organizaciones'
     | '/pioneros'
     | '/sitemap.xml'
     | '/videos'
+    | '/.mcp/list-tools'
+    | '/.well-known/oauth-protected-resource'
     | '/_authenticated/admin'
     | '/_authenticated/aportar'
+    | '/.lovable/oauth/consent'
+    | '/.mcp/invoke-tool/$tool'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -223,12 +286,17 @@ export interface RootRouteChildren {
   HistoriaRoute: typeof HistoriaRoute
   HistoriasRoute: typeof HistoriasRoute
   LineaTiempoRoute: typeof LineaTiempoRoute
+  McpRoute: typeof McpRoute
   NuevasActividadesRoute: typeof NuevasActividadesRoute
   ObisposRoute: typeof ObisposRoute
   OrganizacionesRoute: typeof OrganizacionesRoute
   PionerosRoute: typeof PionerosRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   VideosRoute: typeof VideosRoute
+  Char91DotmcpChar93ListToolsRoute: typeof Char91DotmcpChar93ListToolsRoute
+  Char91DotwellKnownChar93OauthProtectedResourceRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
+  DotlovableOauthConsentRoute: typeof DotlovableOauthConsentRoute
+  Char91DotmcpChar93InvokeToolToolRoute: typeof Char91DotmcpChar93InvokeToolToolRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -273,6 +341,13 @@ declare module '@tanstack/react-router' {
       path: '/nuevas-actividades'
       fullPath: '/nuevas-actividades'
       preLoaderRoute: typeof NuevasActividadesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/mcp': {
+      id: '/mcp'
+      path: '/mcp'
+      fullPath: '/mcp'
+      preLoaderRoute: typeof McpRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/linea-tiempo': {
@@ -345,6 +420,34 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/.well-known/oauth-protected-resource': {
+      id: '/.well-known/oauth-protected-resource'
+      path: '/.well-known/oauth-protected-resource'
+      fullPath: '/.well-known/oauth-protected-resource'
+      preLoaderRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/.mcp/list-tools': {
+      id: '/.mcp/list-tools'
+      path: '/.mcp/list-tools'
+      fullPath: '/.mcp/list-tools'
+      preLoaderRoute: typeof Char91DotmcpChar93ListToolsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/.mcp/invoke-tool/$tool': {
+      id: '/.mcp/invoke-tool/$tool'
+      path: '/.mcp/invoke-tool/$tool'
+      fullPath: '/.mcp/invoke-tool/$tool'
+      preLoaderRoute: typeof Char91DotmcpChar93InvokeToolToolRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/.lovable/oauth/consent': {
+      id: '/.lovable/oauth/consent'
+      path: '/.lovable/oauth/consent'
+      fullPath: '/.lovable/oauth/consent'
+      preLoaderRoute: typeof DotlovableOauthConsentRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -370,12 +473,18 @@ const rootRouteChildren: RootRouteChildren = {
   HistoriaRoute: HistoriaRoute,
   HistoriasRoute: HistoriasRoute,
   LineaTiempoRoute: LineaTiempoRoute,
+  McpRoute: McpRoute,
   NuevasActividadesRoute: NuevasActividadesRoute,
   ObisposRoute: ObisposRoute,
   OrganizacionesRoute: OrganizacionesRoute,
   PionerosRoute: PionerosRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   VideosRoute: VideosRoute,
+  Char91DotmcpChar93ListToolsRoute: Char91DotmcpChar93ListToolsRoute,
+  Char91DotwellKnownChar93OauthProtectedResourceRoute:
+    Char91DotwellKnownChar93OauthProtectedResourceRoute,
+  DotlovableOauthConsentRoute: DotlovableOauthConsentRoute,
+  Char91DotmcpChar93InvokeToolToolRoute: Char91DotmcpChar93InvokeToolToolRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
