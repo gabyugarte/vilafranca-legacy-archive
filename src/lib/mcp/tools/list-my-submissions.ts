@@ -25,6 +25,9 @@ export default defineTool({
       },
     );
     const uid = ctx.getUserId();
+    if (!uid) {
+      return { content: [{ type: "text", text: "No se pudo identificar al usuario." }], isError: true };
+    }
     const [stories, events, photos, docs, interviews] = await Promise.all([
       supabase.from("faith_stories").select("id,title,status,created_at").eq("submitted_by", uid),
       supabase.from("events").select("id,title,status,event_date").eq("submitted_by", uid),

@@ -86,20 +86,20 @@
               "minLength": 1,
               "description": "Nombre de quien comparte la historia."
             },
-            "content": {
+            "story": {
               "type": "string",
               "minLength": 20,
               "description": "Texto completo de la historia."
             },
-            "year": {
-              "type": "integer",
-              "description": "Año aproximado del suceso, si se conoce."
+            "event_date": {
+              "type": "string",
+              "description": "Fecha aproximada del suceso en formato YYYY-MM-DD, si se conoce."
             }
           },
           "required": [
             "title",
             "author",
-            "content"
+            "story"
           ],
           "additionalProperties": false,
           "$schema": "http://json-schema.org/draft-07/schema#"

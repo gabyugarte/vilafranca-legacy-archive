@@ -11,8 +11,11 @@ export default defineTool({
   inputSchema: {
     title: z.string().trim().min(3).describe("Título de la historia."),
     author: z.string().trim().min(1).describe("Nombre de quien comparte la historia."),
-    content: z.string().trim().min(20).describe("Texto completo de la historia."),
-    year: z.number().int().optional().describe("Año aproximado del suceso, si se conoce."),
+    story: z.string().trim().min(20).describe("Texto completo de la historia."),
+    event_date: z
+      .string()
+      .optional()
+      .describe("Fecha aproximada del suceso en formato YYYY-MM-DD, si se conoce."),
   },
   annotations: { readOnlyHint: false, destructiveHint: false, openWorldHint: false },
   handler: async (input, ctx: ToolContext) => {
@@ -30,14 +33,18 @@ export default defineTool({
         auth: { persistSession: false, autoRefreshToken: false },
       },
     );
+    const userId = ctx.getUserId();
+    if (!userId) {
+      return { content: [{ type: "text", text: "No se pudo identificar al usuario." }], isError: true };
+    }
     const { data, error } = await supabase
       .from("faith_stories")
       .insert({
         title: input.title,
         author: input.author,
-        content: input.content,
-        year: input.year ?? null,
-        submitted_by: ctx.getUserId(),
+        story: input.story,
+        event_date: input.event_date ?? null,
+        submitted_by: userId,
       })
       .select("id,title,status")
       .single();
