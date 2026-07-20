@@ -4,6 +4,9 @@ import { supabase } from "@/integrations/supabase/client";
 import { PageHeader } from "@/components/page-header";
 
 export const Route = createFileRoute("/auth")({
+  validateSearch: (s: Record<string, unknown>) => ({
+    next: typeof s.next === "string" && s.next.startsWith("/") && !s.next.startsWith("//") ? s.next : "",
+  }),
   head: () => ({
     meta: [
       { title: "Acceso · Barrio Vilafranca" },
@@ -16,6 +19,7 @@ export const Route = createFileRoute("/auth")({
 
 function AuthPage() {
   const navigate = useNavigate();
+  const { next } = Route.useSearch();
   const [mode, setMode] = useState<"signin" | "signup">("signin");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -23,11 +27,17 @@ function AuthPage() {
   const [msg, setMsg] = useState<string | null>(null);
   const [err, setErr] = useState<string | null>(null);
 
+  const goNext = () => {
+    if (next) window.location.href = next;
+    else navigate({ to: "/aportar" });
+  };
+
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
-      if (data.session) navigate({ to: "/aportar" });
+      if (data.session) goNext();
     });
-  }, [navigate]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
@@ -38,15 +48,18 @@ function AuthPage() {
       if (mode === "signin") {
         const { error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
-        navigate({ to: "/aportar" });
+        goNext();
       } else {
+        const redirectTarget = next
+          ? window.location.origin + next
+          : window.location.origin + "/aportar";
         const { data, error } = await supabase.auth.signUp({
           email,
           password,
-          options: { emailRedirectTo: window.location.origin + "/aportar" },
+          options: { emailRedirectTo: redirectTarget },
         });
         if (error) throw error;
-        if (data.session) navigate({ to: "/aportar" });
+        if (data.session) goNext();
         else setMsg("Cuenta creada. Revisa tu correo para confirmar el acceso.");
       }
     } catch (e: any) {
@@ -55,6 +68,7 @@ function AuthPage() {
       setBusy(false);
     }
   }
+
 
   return (
     <>

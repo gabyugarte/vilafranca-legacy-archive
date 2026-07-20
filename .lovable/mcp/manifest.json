@@ -1,0 +1,127 @@
+{
+  "version": 1,
+  "sdk_version": "0.24.0",
+  "path": "/mcp",
+  "auth": {
+    "type": "oauth",
+    "issuer": "https://btfultlyhikbyqudfwkc.supabase.co/auth/v1",
+    "accepted_audiences": [
+      "authenticated"
+    ]
+  },
+  "mcp": {
+    "server": {
+      "name": "barrio-vilafranca-mcp",
+      "version": "0.1.0",
+      "title": "Museo del Barrio Vilafranca"
+    },
+    "tools": [
+      {
+        "name": "list_events",
+        "title": "Listar eventos aprobados",
+        "description": "Devuelve los eventos históricos publicados del Barrio Vilafranca ordenados por fecha, con filtro opcional por año o categoría.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "year": {
+              "type": "integer",
+              "description": "Filtrar por año exacto."
+            },
+            "category": {
+              "type": "string",
+              "description": "Filtrar por categoría (p. ej. hito, liderazgo, primaria)."
+            },
+            "limit": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "description": "Máximo 100, por defecto 50."
+            }
+          },
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "list_bishops",
+        "title": "Listar obispos del barrio",
+        "description": "Devuelve los obispos del Barrio Vilafranca con sus periodos de servicio y consejeros.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {}
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "submit_faith_story",
+        "title": "Aportar una historia de fe",
+        "description": "Envía una nueva historia de fe al museo del Barrio Vilafranca. Queda en estado 'pendiente' hasta que un administrador la apruebe. Requiere sesión de usuario.",
+        "annotations": {
+          "readOnlyHint": false,
+          "destructiveHint": false,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string",
+              "minLength": 3,
+              "description": "Título de la historia."
+            },
+            "author": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Nombre de quien comparte la historia."
+            },
+            "story": {
+              "type": "string",
+              "minLength": 20,
+              "description": "Texto completo de la historia."
+            },
+            "event_date": {
+              "type": "string",
+              "description": "Fecha aproximada del suceso en formato YYYY-MM-DD, si se conoce."
+            }
+          },
+          "required": [
+            "title",
+            "author",
+            "story"
+          ],
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "list_my_submissions",
+        "title": "Ver mis aportaciones",
+        "description": "Devuelve las aportaciones (historias, eventos, fotos, documentos, entrevistas) enviadas por el usuario autenticado, con su estado de moderación.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {}
+        },
+        "outputSchema": null
+      }
+    ]
+  }
+}
