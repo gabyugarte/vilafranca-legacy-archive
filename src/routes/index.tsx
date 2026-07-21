@@ -116,7 +116,7 @@ function Home() {
           <div className="relative">
             <div className="absolute -inset-4 rounded-3xl warm-gradient blur-2xl opacity-60" />
             <img
-              src={chapelHero}
+              src={chapelHero.url}
               alt="Capilla del Barrio Vilafranca al amanecer"
               width={1920}
               height={1088}
