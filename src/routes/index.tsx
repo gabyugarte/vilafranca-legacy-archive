@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { ArrowRight, BookOpen, Users, Heart, Camera, FileText, PlayCircle } from "lucide-react";
-import chapelHero from "@/assets/chapel-hero.jpg";
+import chapelHero from "@/assets/chapel-vilafranca.jpg.asset.json";
 import {
   eventsQuery,
   organizationsQuery,
