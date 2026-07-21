@@ -18,6 +18,7 @@ export const fetchEvents = createServerFn({ method: "GET" }).handler(async () =>
   const { data, error } = await supabase
     .from("events")
     .select("*")
+    .eq("status", "approved")
     .order("event_date", { ascending: true });
   if (error) throw new Error(error.message);
   return data ?? [];
