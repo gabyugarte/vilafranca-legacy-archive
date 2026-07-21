@@ -141,6 +141,7 @@ export type Database = {
         Row: {
           caption: string | null
           category: Database["public"]["Enums"]["event_category"] | null
+          created_at: string
           id: string
           image_url: string
           photo_date: string | null
@@ -152,6 +153,7 @@ export type Database = {
         Insert: {
           caption?: string | null
           category?: Database["public"]["Enums"]["event_category"] | null
+          created_at?: string
           id?: string
           image_url: string
           photo_date?: string | null
@@ -163,6 +165,7 @@ export type Database = {
         Update: {
           caption?: string | null
           category?: Database["public"]["Enums"]["event_category"] | null
+          created_at?: string
           id?: string
           image_url?: string
           photo_date?: string | null
@@ -175,6 +178,7 @@ export type Database = {
       }
       historical_documents: {
         Row: {
+          created_at: string
           description: string | null
           document_date: string | null
           document_url: string | null
@@ -186,6 +190,7 @@ export type Database = {
           year: number | null
         }
         Insert: {
+          created_at?: string
           description?: string | null
           document_date?: string | null
           document_url?: string | null
@@ -197,6 +202,7 @@ export type Database = {
           year?: number | null
         }
         Update: {
+          created_at?: string
           description?: string | null
           document_date?: string | null
           document_url?: string | null
@@ -211,6 +217,7 @@ export type Database = {
       }
       interviews: {
         Row: {
+          created_at: string
           event_date: string | null
           id: string
           person: string | null
@@ -222,6 +229,7 @@ export type Database = {
           video_url: string | null
         }
         Insert: {
+          created_at?: string
           event_date?: string | null
           id?: string
           person?: string | null
@@ -233,6 +241,7 @@ export type Database = {
           video_url?: string | null
         }
         Update: {
+          created_at?: string
           event_date?: string | null
           id?: string
           person?: string | null
