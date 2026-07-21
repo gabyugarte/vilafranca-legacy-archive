@@ -59,6 +59,7 @@ export const fetchStories = createServerFn({ method: "GET" }).handler(async () =
   const { data, error } = await supabase
     .from("faith_stories")
     .select("*")
+    .eq("status", "approved")
     .order("created_at", { ascending: false });
   if (error) throw new Error(error.message);
   return data ?? [];
@@ -66,7 +67,10 @@ export const fetchStories = createServerFn({ method: "GET" }).handler(async () =
 
 export const fetchInterviews = createServerFn({ method: "GET" }).handler(async () => {
   const supabase = serverClient();
-  const { data, error } = await supabase.from("interviews").select("*");
+  const { data, error } = await supabase
+    .from("interviews")
+    .select("*")
+    .eq("status", "approved");
   if (error) throw new Error(error.message);
   return data ?? [];
 });
@@ -76,6 +80,7 @@ export const fetchDocuments = createServerFn({ method: "GET" }).handler(async ()
   const { data, error } = await supabase
     .from("historical_documents")
     .select("*")
+    .eq("status", "approved")
     .order("document_date", { ascending: false });
   if (error) throw new Error(error.message);
   return data ?? [];
