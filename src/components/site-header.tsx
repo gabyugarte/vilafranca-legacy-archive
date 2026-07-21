@@ -102,6 +102,34 @@ export function SiteHeader() {
               </Link>
             ))}
           </nav>
+          <div className="mx-auto flex max-w-7xl flex-wrap gap-2 border-t border-border/60 px-4 py-4 sm:px-6">
+            {session ? (
+              <>
+                <Link
+                  to="/aportar"
+                  onClick={() => setOpen(false)}
+                  className="inline-flex items-center gap-1.5 rounded-full bg-primary px-3 py-2 text-xs text-primary-foreground shadow-soft transition hover:opacity-90"
+                >
+                  <Heart className="h-3.5 w-3.5" /> Aportar
+                </Link>
+                <Link
+                  to="/admin"
+                  onClick={() => setOpen(false)}
+                  className="inline-flex items-center gap-1.5 rounded-full border border-border px-3 py-2 text-xs text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
+                >
+                  <Lock className="h-3.5 w-3.5" /> Admin
+                </Link>
+              </>
+            ) : (
+              <Link
+                to="/auth"
+                onClick={() => setOpen(false)}
+                className="inline-flex items-center gap-1.5 rounded-full border border-border px-3 py-2 text-xs text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
+              >
+                <Lock className="h-3.5 w-3.5" /> Acceso
+              </Link>
+            )}
+          </div>
         </div>
       )}
     </header>
