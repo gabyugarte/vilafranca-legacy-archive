@@ -85,7 +85,8 @@ export const fetchGallery = createServerFn({ method: "GET" }).handler(async () =
   const { data, error } = await supabase
     .from("gallery_photos")
     .select("*")
-    .order("photo_date", { ascending: false });
+    .eq("status", "approved")
+    .order("photo_date", { ascending: false, nullsFirst: false });
   if (error) throw new Error(error.message);
   return data ?? [];
 });
