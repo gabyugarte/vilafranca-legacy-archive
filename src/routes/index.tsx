@@ -46,6 +46,7 @@ function Home() {
   const { data: events } = useSuspenseQuery(eventsQuery);
   const { data: orgs } = useSuspenseQuery(organizationsQuery);
   const { data: bishops } = useSuspenseQuery(bishopsQuery);
+  const { data: branchPresidents } = useSuspenseQuery(branchPresidentsQuery);
 
   const highlights = events.slice(0, 6);
   const firstYear = events[0]?.year ?? new Date().getFullYear();
@@ -87,7 +88,7 @@ function Home() {
               </Link>
             </div>
 
-            <dl className="mt-12 grid max-w-md grid-cols-3 gap-6">
+            <dl className="mt-12 grid max-w-lg grid-cols-2 gap-6 sm:grid-cols-4">
               <div>
                 <dt className="text-xs uppercase tracking-widest text-muted-foreground">
                   Años
@@ -102,6 +103,14 @@ function Home() {
                 </dt>
                 <dd className="mt-1 font-display text-3xl text-foreground">
                   {bishops.length}
+                </dd>
+              </div>
+              <div>
+                <dt className="text-xs uppercase tracking-widest text-muted-foreground">
+                  Presidentes de rama
+                </dt>
+                <dd className="mt-1 font-display text-3xl text-foreground">
+                  {branchPresidents.length}
                 </dd>
               </div>
               <div>
