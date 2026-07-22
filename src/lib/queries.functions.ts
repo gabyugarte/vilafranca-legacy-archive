@@ -120,6 +120,10 @@ export const organizationsQuery = queryOptions({
   queryKey: ["organizations"],
   queryFn: () => fetchOrganizations(),
 });
+export const branchPresidentsQuery = queryOptions({
+  queryKey: ["branch-presidents"],
+  queryFn: () => fetchBranchPresidents(),
+});
 export const pioneersQuery = queryOptions({
   queryKey: ["pioneers"],
   queryFn: () => fetchPioneers(),
