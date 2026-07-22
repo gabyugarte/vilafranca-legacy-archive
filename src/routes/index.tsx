@@ -6,6 +6,7 @@ import {
   eventsQuery,
   organizationsQuery,
   bishopsQuery,
+  branchPresidentsQuery,
   CATEGORY_LABELS,
 } from "@/lib/queries.functions";
 
@@ -15,6 +16,7 @@ export const Route = createFileRoute("/")({
       context.queryClient.ensureQueryData(eventsQuery),
       context.queryClient.ensureQueryData(organizationsQuery),
       context.queryClient.ensureQueryData(bishopsQuery),
+      context.queryClient.ensureQueryData(branchPresidentsQuery),
     ]);
   },
   head: () => ({
