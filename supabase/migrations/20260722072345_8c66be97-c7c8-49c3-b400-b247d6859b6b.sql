@@ -1,0 +1,1 @@
+ALTER TABLE public.bishops ALTER COLUMN start_date DROP NOT NULL;
