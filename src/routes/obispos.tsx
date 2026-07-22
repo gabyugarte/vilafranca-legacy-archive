@@ -56,7 +56,9 @@ function BishopsPage() {
                     {b.name}
                   </h3>
                   <div className="text-sm text-muted-foreground">
-                    {fmt(b.start_date)} — {fmt(b.end_date)}
+                    {b.start_date || b.end_date
+                      ? `${fmt(b.start_date, "—")} — ${fmt(b.end_date, "presente")}`
+                      : "Fechas por confirmar"}
                   </div>
                 </div>
                 {b.bio && (
