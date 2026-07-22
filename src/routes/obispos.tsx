@@ -24,8 +24,8 @@ export const Route = createFileRoute("/obispos")({
   component: BishopsPage,
 });
 
-function fmt(date: string | null) {
-  if (!date) return "presente";
+function fmt(date: string | null, fallback: string) {
+  if (!date) return fallback;
   return new Date(date).toLocaleDateString("es-ES", {
     month: "long",
     year: "numeric",
