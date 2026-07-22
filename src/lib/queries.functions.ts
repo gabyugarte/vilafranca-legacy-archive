@@ -44,6 +44,16 @@ export const fetchOrganizations = createServerFn({ method: "GET" }).handler(asyn
   return data ?? [];
 });
 
+export const fetchBranchPresidents = createServerFn({ method: "GET" }).handler(async () => {
+  const supabase = serverClient();
+  const { data, error } = await supabase
+    .from("branch_presidents")
+    .select("*")
+    .order("order_index", { ascending: true });
+  if (error) throw new Error(error.message);
+  return data ?? [];
+});
+
 export const fetchPioneers = createServerFn({ method: "GET" }).handler(async () => {
   const supabase = serverClient();
   const { data, error } = await supabase
@@ -109,6 +119,10 @@ export const bishopsQuery = queryOptions({
 export const organizationsQuery = queryOptions({
   queryKey: ["organizations"],
   queryFn: () => fetchOrganizations(),
+});
+export const branchPresidentsQuery = queryOptions({
+  queryKey: ["branch-presidents"],
+  queryFn: () => fetchBranchPresidents(),
 });
 export const pioneersQuery = queryOptions({
   queryKey: ["pioneers"],
