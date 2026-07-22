@@ -29,7 +29,7 @@ export const fetchBishops = createServerFn({ method: "GET" }).handler(async () =
   const { data, error } = await supabase
     .from("bishops")
     .select("*")
-    .order("start_date", { ascending: true });
+    .order("order_index", { ascending: true });
   if (error) throw new Error(error.message);
   return data ?? [];
 });

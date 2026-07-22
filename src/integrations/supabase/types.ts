@@ -24,7 +24,7 @@ export type Database = {
           name: string
           order_index: number
           photo_url: string | null
-          start_date: string
+          start_date: string | null
         }
         Insert: {
           bio?: string | null
@@ -35,7 +35,7 @@ export type Database = {
           name: string
           order_index?: number
           photo_url?: string | null
-          start_date: string
+          start_date?: string | null
         }
         Update: {
           bio?: string | null
@@ -46,7 +46,7 @@ export type Database = {
           name?: string
           order_index?: number
           photo_url?: string | null
-          start_date?: string
+          start_date?: string | null
         }
         Relationships: []
       }
