@@ -50,6 +50,42 @@ export type Database = {
         }
         Relationships: []
       }
+      branch_presidents: {
+        Row: {
+          bio: string | null
+          created_at: string
+          end_date: string | null
+          id: string
+          name: string
+          order_index: number
+          photo_url: string | null
+          start_date: string
+          updated_at: string
+        }
+        Insert: {
+          bio?: string | null
+          created_at?: string
+          end_date?: string | null
+          id?: string
+          name: string
+          order_index?: number
+          photo_url?: string | null
+          start_date: string
+          updated_at?: string
+        }
+        Update: {
+          bio?: string | null
+          created_at?: string
+          end_date?: string | null
+          id?: string
+          name?: string
+          order_index?: number
+          photo_url?: string | null
+          start_date?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       events: {
         Row: {
           category: Database["public"]["Enums"]["event_category"]
