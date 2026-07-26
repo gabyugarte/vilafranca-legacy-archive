@@ -27,6 +27,7 @@ export const history = {
           title: "Los primeros pasos",
 
           content: `
+Alrededor del año 1978 
 Mucho antes de que existiera el Barrio Vilafranca, los miembros de La Iglesia de Jesucristo de los Santos de los Últimos Días que vivían en esta zona pertenecían al Distrito de Tarragona. En aquellos años era necesario desplazarse hasta Reus para asistir a las reuniones dominicales.
 
 A finales de los años setenta comenzaron a llegar los primeros misioneros a Vilafranca del Penedès. Gracias a su labor, varias familias conocieron el Evangelio restaurado y decidieron unirse a la Iglesia.
@@ -44,7 +45,6 @@ Gracias a la fe y al esfuerzo de aquellos primeros santos, comenzó a formarse u
 
           content: `
 8 de julio de 1990
-
 El 8 de julio de 1990 se organizó oficialmente la Rama Vilafranca, marcando el inicio de una nueva etapa para los miembros de la comarca.
 
 Las reuniones dominicales se celebraban de 10:00 a 13:00 horas.
@@ -71,6 +71,9 @@ La llegada de la familia Porras permitió consolidar definitivamente la nueva ra
           title: "El primer liderazgo",
 
           content: `
+27 de Enero de 1991
+El 27 de enero de 1991 se organizó el primer liderazgo de la Rama Vilafranca.
+
 El primer presidente de la Rama Vilafranca fue Francisco Ibáñez.
 
 Uno de sus consejeros fue Luis Sales, quien además servía como asesor de la Primaria.
@@ -78,12 +81,25 @@ Uno de sus consejeros fue Luis Sales, quien además servía como asesor de la Pr
 Durante aquellos primeros años comenzaron a organizarse los llamamientos necesarios para el funcionamiento de la nueva unidad.
 
 Primeros llamamientos:
-
-• Presidente de Escuela Dominical: Padre de Mari Moya
-• Presidenta de Sociedad de Socorro: María Ángela Porras
-• Consejera de Sociedad de Socorro: Ángela Moya
-• Presidenta de Primaria: Mari Moya
 `,
+cards: [
+  {
+    label: "Presidente de Escuela Dominical",
+    value: "Padre de Mari Moya",
+  },
+  {
+    label: "Presidenta Sociedad de Socorro",
+    value: "María Ángela Porras",
+  },
+  {
+    label: "Consejera Sociedad de Socorro",
+    value: "Ángela Moya",
+  },
+  {
+    label: "Presidenta de Primaria",
+    value: "Mari Moya",
+  },
+]
         },
 
         {
@@ -114,6 +130,12 @@ Su cercanía a la estación facilitó enormemente la asistencia de los miembros.
 
 Este traslado representó un paso decisivo en la consolidación de la Iglesia en Vilafranca.
 `,
+
+  gallery: [
+    "/images/history/primera-capilla-1.jpg",
+    "/images/history/primera-capilla-2.jpg",
+    "/images/history/primera-capilla-3.jpg",
+  ],
         },
 
         {
@@ -138,64 +160,114 @@ Maestros:
           title: "Presidentes de Rama",
 
           content: `
-A lo largo de los años sirvieron como presidentes de la Rama Vilafranca:
 
-• Francisco Ibáñez
-• Ferrán Silvestre
-• Luis Sales
-• Francesc Urpí
-• Hermano Riojano
-• Antonio Ibáñez
-• Guillermo Pinto
-
-El 11 de noviembre de 2007, Guillermo Pinto fue el último presidente de la Rama Vilafranca antes de la reorganización de la unidad.
-
+11 de noviembre de 2007
+Guillermo Pinto fue el último presidente de la Rama Vilafranca antes de la reorganización de la unidad.
 Durante su presidencia la rama se trasladó a un edificio más amplio para atender el crecimiento de la congregación.
+
+A lo largo de los años sirvieron como presidentes de la Rama Vilafranca:
 `,
+cards: [
+  {
+    label: "1990",
+    value: "Francisco Ibáñez",
+  },
+  {
+    label: "Posteriormente",
+    value: "Ferrán Silvestre",
+  },
+  {
+    label: "Posteriormente",
+    value: "Luis Sales",
+  },
+  {
+    label: "Posteriormente",
+    value: "Francesc Urpí",
+  },
+  {
+    label: "Posteriormente",
+    value: "Hno. Riojano",
+  },
+  {
+    label: "Posteriormente",
+    value: "Antonio Ibáñez",
+  },
+  {
+    label: "2007",
+    value: "Guillermo Pinto",
+  },
+]
         },
 
-        {
-          title: "El nacimiento del Barrio Vilafranca",
+{
+  title: "El nacimiento del Barrio Vilafranca",
 
-          content: `
+  content: `
 20 de enero de 2013
 
 El crecimiento constante de miembros hizo posible un momento histórico.
 
 La Rama Vilafranca fue organizada oficialmente como Barrio Vilafranca.
 
-Primer obispado:
-
-• Obispo: Pere Borrut
-
-Consejeros:
-
-• José Luis Cruz
-• Albuquerque
-
-Posteriormente, tras el traslado de Albuquerque, fue llamado como segundo consejero Guillermo Pinto.
-
 Este acontecimiento marcó un antes y un después en la historia del barrio y simbolizó la madurez alcanzada por la Iglesia en Vilafranca.
 `,
-        },
+
+  cards: [
+    {
+      label: "Primer Obispo",
+      value: "Pere Borrut",
+    },
+    {
+      label: "Primer Consejero",
+      value: "José Luis Cruz",
+    },
+    {
+      label: "Segundo Consejero",
+      value: "Albuquerque",
+    },
+    {
+      label: "Posteriormente",
+      value: "Guillermo Pinto",
+    },
+  ],
+},
 
         {
           title: "Los primeros misioneros",
 
           content: `
 Entre los primeros misioneros que salieron desde la Rama Vilafranca se encuentran:
-
-• Lucía Moya
-• Francisco Rojano
-• Judith Rojano
-• Javier Porras
-
-Posteriormente también sirvieron:
-
-• Hermanos Becerra
-• Javier Cruz
-• Laura Silvestre
 `,
+cards: [
+  {
+    label: "Primeros misioneros",
+    value: "Lucía Moya",
+  },
+  {
+    label: "Primeros misioneros",
+    value: "Francisco Riojano",
+  },
+  {
+    label: "Primeros misioneros",
+    value: "Judith Riojano",
+  },
+  {
+    label: "Primeros misioneros",
+    value: "Javier Porras",
+  },
+  {
+    label: "Posteriormente",
+    value: "Hnos. Becerra",
+  },
+  {
+    label: "Posteriormente",
+    value: "Javier Cruz",
+  },
+  {
+    label: "Posteriormente",
+    value: "Laura Silvestre",
+  },
+]
         },
       ],
     },
@@ -258,6 +330,11 @@ Durante la ceremonia se enterró una cápsula del tiempo con:
 • Un Libro de Mormón dedicado por el obispo.
 • Una placa conmemorativa colocada por el presidente de misión, Presidente Dayton.
 `,
+gallery: [
+  "/images/history/primera-palada-1.jpg",
+  "/images/history/primera-palada-2.jpg",
+  "/images/history/primera-palada-3.jpg",
+],
 },
 {
   title: "Compartiendo el Evangelio",
@@ -267,6 +344,10 @@ Cada año el barrio participaba en la celebración de Sant Jordi regalando ejemp
 
 En una de estas actividades se entregó un Libro de Mormón al alcalde de Vilafranca.
 `,
+gallery: [
+  "/images/history/sant-jordi-1.jpg",
+  "/images/history/sant-jordi-2.jpg",
+],
 },
 {
   title: "Fiesta del Voluntariado",
@@ -306,6 +387,11 @@ Se celebró la primera reunión sacramental en la nueva capilla.
 
 Pocos días después tuvo lugar la sexta conferencia del barrio.
 `,
+gallery: [
+  "/images/history/nueva-capilla-1.jpg",
+  "/images/history/nueva-capilla-2.jpg",
+  "/images/history/nueva-capilla-3.jpg",
+],
 },
 {
   title: "Cambios en el obispado",

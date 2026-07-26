@@ -1,6 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { ArrowRight, BookOpen, Users, Heart, Camera, FileText, PlayCircle } from "lucide-react";
+import { Gallery } from "@/components/gallery";
+
 //import chapelHero from "@/assets/chapel-vilafranca.jpg.asset.json";
 const chapelHero = "/images/chapel-vilafranca.jpeg";
 import {
@@ -51,7 +53,7 @@ function Home() {
 
   const highlights = events.slice(0, 6);
   const firstYear = events[0]?.year ?? new Date().getFullYear();
-  const years = new Date().getFullYear() - firstYear;
+  const years = new Date().getFullYear() - 1979;
 
   return (
     <div>
@@ -61,7 +63,7 @@ function Home() {
         <div className="relative mx-auto grid max-w-7xl gap-12 px-4 py-16 sm:px-6 lg:grid-cols-2 lg:items-center lg:gap-16 lg:px-8 lg:py-24">
           <div className="animate-fade-in">
             <div className="inline-flex items-center gap-2 rounded-full border border-border bg-background/80 px-3 py-1 text-xs uppercase tracking-[0.2em] text-muted-foreground">
-              Museo digital · desde {firstYear}
+              Museo Digital del Barrio Vilafranca
             </div>
             <h1 className="mt-6 font-display text-5xl leading-[1.05] text-foreground sm:text-6xl lg:text-7xl">
               Historia del{" "}
@@ -100,20 +102,21 @@ function Home() {
               </div>
               <div>
                 <dt className="text-xs uppercase tracking-widest text-muted-foreground">
+                  Presidentes de rama
+                </dt>
+                <dd className="mt-1 font-display text-3xl text-foreground">
+                  7
+                </dd>
+              </div>
+              <div>
+                <dt className="text-xs uppercase tracking-widest text-muted-foreground">
                   Obispos
                 </dt>
                 <dd className="mt-1 font-display text-3xl text-foreground">
                   {bishops.length}
                 </dd>
               </div>
-              <div>
-                <dt className="text-xs uppercase tracking-widest text-muted-foreground">
-                  Presidentes de rama
-                </dt>
-                <dd className="mt-1 font-display text-3xl text-foreground">
-                  {branchPresidents.length}
-                </dd>
-              </div>
+
               <div>
                 <dt className="text-xs uppercase tracking-widest text-muted-foreground">
                   Hitos
@@ -125,20 +128,21 @@ function Home() {
             </dl>
           </div>
 
-          <div className="relative">
-            <div className="absolute -inset-4 rounded-3xl warm-gradient blur-2xl opacity-60" />
-            <img
-              src={chapelHero}
-              alt="Capilla del Barrio Vilafranca al amanecer"
-              width={1920}
-              height={1088}
-              className="relative aspect-[4/3] w-full rounded-3xl object-cover shadow-elegant"
-            />
-            <figcaption className="mt-3 text-center text-xs italic text-muted-foreground">
-              Nuestra capilla — hogar espiritual del barrio
-            </figcaption>
-          </div>
-        </div>
+<div className="relative">
+  <div className="absolute -inset-4 rounded-3xl warm-gradient blur-2xl opacity-60 pointer-events-none" />
+
+<Gallery
+  images={[chapelHero]}
+  title="Capilla del Barrio Vilafranca"
+  columns={1}
+/>
+
+  <figcaption className="mt-3 text-center text-xs italic text-muted-foreground">
+    Nuestra capilla — hogar espiritual del barrio
+  </figcaption>
+</div>
+</div>
+
       </section>
 
       {/* Welcome */}

@@ -1,8 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { PageHeader } from "@/components/page-header";
+import { Gallery } from "@/components/gallery";
 import { bishopsQuery } from "@/lib/queries.functions";
 import { UserCircle2 } from "lucide-react";
+import { bishopPhotos } from "@/lib/bishop-photos";
+
 
 export const Route = createFileRoute("/obispos")({
   loader: ({ context }) => context.queryClient.ensureQueryData(bishopsQuery),
@@ -31,10 +34,16 @@ function fmt(date: string | null, fallback: string) {
     year: "numeric",
   });
 }
-
+function bishopPhoto(name: string) {
+  return `/images/bishops/${name
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/\s+/g, "-")}.jpg`;
+}
 function BishopsPage() {
   const { data: bishops } = useSuspenseQuery(bishopsQuery);
-
+console.log(bishops);
   return (
     <>
       <PageHeader
@@ -44,52 +53,88 @@ function BishopsPage() {
       />
 
       <section className="mx-auto max-w-4xl px-4 py-16 sm:px-6">
-        <ol className="relative space-y-6 border-l-2 border-border/60 pl-8">
+        <div className="mx-auto space-y-16">
           {bishops.map((b) => (
-            <li key={b.id} className="relative">
-              <span className="absolute -left-[41px] top-3 grid h-6 w-6 place-items-center rounded-full border-2 border-background bg-warm text-warm-foreground">
-                <UserCircle2 className="h-4 w-4" />
-              </span>
-              <article className="rounded-2xl border border-border bg-card p-6 shadow-soft">
-                <div className="flex flex-wrap items-baseline justify-between gap-2">
-                  <h3 className="font-display text-2xl text-foreground">
-                    {b.name}
-                  </h3>
-                  <div className="text-sm text-muted-foreground">
-                    {b.start_date || b.end_date
-                      ? `${fmt(b.start_date, "—")} — ${fmt(b.end_date, "presente")}`
-                      : "Fechas por confirmar"}
-                  </div>
+<li key={b.id}>
+  <article className="overflow-hidden rounded-3xl border border-border bg-card shadow-soft transition-all duration-300 hover:shadow-xl">
+
+    <div className="grid md:grid-cols-[280px_1fr]">
+
+      {/* Fotografía */}
+<div className="relative border border-primary/15 bg-primary/5 p-6">
+
+  <img
+    src={bishopPhotos[b.name] ?? "/images/bishops/default.jpg"}
+    alt={b.name}
+    className="aspect-[4/5] w-full rounded-2xl object-cover shadow-xl transition duration-500 hover:scale-[1.02] cursor-pointer"
+  />
+
+</div>
+
+      {/* Información */}
+      <div className="p-8">
+
+        <div className="flex flex-wrap items-center justify-between gap-4">
+          <div>
+           <h2 className="font-display text-4xl text-foreground">
+              {b.name}
+            </h2>
+
+            <div className="mt-3 inline-flex rounded-full bg-primary/10 px-4 py-2 text-sm font-semibold text-primary">
+              {b.start_date || b.end_date
+                ? `${fmt(b.start_date, "—")} — ${fmt(
+                    b.end_date,
+                    "Actualidad"
+                  )}`
+                : "Fechas por confirmar"}
+            </div>
+          </div>
+
+          <UserCircle2 className="h-12 w-12 text-primary/40" />
+        </div>
+
+        {b.bio && (
+          <p className="mt-8 text-lg leading-8 text-foreground/80">
+            {b.bio}
+          </p>
+        )}
+
+        {(b.counselor_1 || b.counselor_2) && (
+          <div className="mt-8 grid gap-4 sm:grid-cols-2">
+
+            {b.counselor_1 && (
+              <div className="rounded-xl border border-primary/15 bg-primary/5 p-4">
+                <div className="text-xs uppercase tracking-widest text-muted-foreground">
+                  Primer consejero
                 </div>
-                {b.bio && (
-                  <p className="mt-3 text-sm leading-relaxed text-foreground/85">
-                    {b.bio}
-                  </p>
-                )}
-                {(b.counselor_1 || b.counselor_2) && (
-                  <div className="mt-4 grid gap-2 rounded-xl bg-muted/60 p-3 text-sm text-muted-foreground sm:grid-cols-2">
-                    {b.counselor_1 && (
-                      <div>
-                        <span className="text-xs uppercase tracking-wider">
-                          Primer consejero
-                        </span>
-                        <div className="text-foreground">{b.counselor_1}</div>
-                      </div>
-                    )}
-                    {b.counselor_2 && (
-                      <div>
-                        <span className="text-xs uppercase tracking-wider">
-                          Segundo consejero
-                        </span>
-                        <div className="text-foreground">{b.counselor_2}</div>
-                      </div>
-                    )}
-                  </div>
-                )}
-              </article>
-            </li>
+                <div className="mt-1 font-medium">
+                  {b.counselor_1}
+                </div>
+              </div>
+            )}
+
+            {b.counselor_2 && (
+              <div className="rounded-xl border border-primary/15 bg-primary/5 p-4">
+                <div className="text-xs uppercase tracking-widest text-muted-foreground">
+                  Segundo consejero
+                </div>
+                <div className="mt-1 font-medium">
+                  {b.counselor_2}
+                </div>
+              </div>
+            )}
+
+          </div>
+        )}
+
+      </div>
+
+    </div>
+
+  </article>
+</li>
           ))}
-        </ol>
+        </div>
       </section>
     </>
   );
