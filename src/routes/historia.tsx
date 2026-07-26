@@ -1,6 +1,8 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
+// import { PageHeader } from "@/components/page-header";
+// import { MapPin } from "lucide-react";
 import { PageHeader } from "@/components/page-header";
-import { MapPin } from "lucide-react";
+import { history } from "@/content/history";
 
 export const Route = createFileRoute("/historia")({
   head: () => ({
@@ -26,81 +28,63 @@ function HistoriaPage() {
     <>
       <PageHeader
         eyebrow="Nuestra historia"
-        title="Un barrio, muchas familias, una misma fe"
-        description="Desde su creación, el Barrio Vilafranca ha sido un lugar de reunión, servicio y crecimiento espiritual. Esta es la memoria compartida de sus miembros."
+        title={history.title}
+        description={history.subtitle}
       />
 
-      <article className="mx-auto max-w-3xl space-y-8 px-4 py-16 text-lg leading-relaxed text-foreground/90 sm:px-6">
-        <p className="text-xl italic text-muted-foreground">
-          «Cada barrio tiene una historia. La nuestra empezó con unas pocas
-          familias, mucha fe y el deseo de construir Sion en Vilafranca».
-        </p>
-
-        <section>
-          <h2 className="font-display text-3xl text-foreground">Los inicios</h2>
-          <p className="mt-4 text-base">
-            El Barrio Vilafranca fue organizado como una unidad de La Iglesia de
-            Jesucristo de los Santos de los Últimos Días para reunir a los
-            miembros que residían en la zona. En aquellos primeros años, las
-            reuniones se celebraban con humildad y devoción, y la capilla se
-            fue convirtiendo poco a poco en el corazón de la comunidad.
+      <article className="mx-auto max-w-4xl px-4 py-16 sm:px-6">
+        <div className="mx-auto max-w-3xl">
+          <p className="text-center text-2xl italic text-muted-foreground">
+            "{history.quote.text}"
           </p>
-        </section>
 
-        <section>
-          <h2 className="font-display text-3xl text-foreground">Crecimiento y consolidación</h2>
-          <p className="mt-4 text-base">
-            Con el paso de los años, las auxiliares se organizaron y
-            fortalecieron: la Sociedad de Socorro, la Primaria, las Mujeres
-            Jóvenes, los Hombres Jóvenes, la Escuela Dominical y el Cuórum de
-            Élderes. Cada una de ellas ha dejado huella en la vida de los
-            miembros y en la historia del barrio.
+          <p className="mt-2 text-center text-sm text-muted-foreground">
+            {history.quote.reference}
           </p>
-        </section>
-
-        <section>
-          <h2 className="font-display text-3xl text-foreground">Un legado vivo</h2>
-          <p className="mt-4 text-base">
-            Hoy seguimos reuniéndonos, sirviendo y creciendo. Los rostros
-            cambian, pero el testimonio de Jesucristo y la unión entre hermanos
-            permanece. Esta web es nuestro intento de preservar y honrar todo lo
-            recibido, y también un lugar para seguir escribiendo la historia que
-            está por venir.
-          </p>
-        </section>
-
-        <div className="rounded-2xl border border-border bg-card p-6 shadow-soft">
-          <div className="flex items-start gap-4">
-            <div className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-secondary text-primary">
-              <MapPin className="h-5 w-5" />
-            </div>
-            <div>
-              <div className="font-display text-xl text-foreground">
-                Evolución del barrio
-              </div>
-              <p className="mt-1 text-sm text-muted-foreground">
-                En futuras versiones incluiremos un mapa interactivo con la
-                evolución geográfica del barrio y de sus límites a lo largo del
-                tiempo.
-              </p>
-            </div>
-          </div>
         </div>
 
-        <div className="flex flex-wrap gap-3 pt-4">
-          <Link
-            to="/linea-tiempo"
-            className="inline-flex items-center rounded-full bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground shadow-soft hover:opacity-95"
-          >
-            Ver la línea del tiempo
-          </Link>
-          <Link
-            to="/pioneros"
-            className="inline-flex items-center rounded-full border border-border bg-background px-5 py-2.5 text-sm font-medium text-foreground hover:bg-secondary"
-          >
-            Reconocimiento a los pioneros
-          </Link>
-        </div>
+{history.chapters.map((chapter) => (
+  <section
+    key={chapter.id}
+    className="mx-auto mt-20 max-w-5xl"
+  >
+    {/* Imagen del capítulo */}
+    <img
+      src={chapter.image}
+      alt={chapter.subtitle}
+      className="mb-10 h-[420px] w-full rounded-3xl object-cover shadow-xl"
+    />
+
+    {/* Número del capítulo */}
+    <p className="text-sm font-semibold uppercase tracking-[0.3em] text-primary">
+      {chapter.title}
+    </p>
+
+    {/* Título */}
+    <h2 className="mt-2 font-display text-5xl text-foreground">
+      {chapter.subtitle}
+    </h2>
+
+    {/* Cita */}
+    <blockquote className="mt-8 rounded-2xl border-l-4 border-primary bg-muted/40 p-8 italic text-xl text-muted-foreground">
+      "{chapter.quote}"
+    </blockquote>
+    <div className="mt-12 space-y-16">
+      {chapter.sections.map((section, index) => (
+        <section key={index}>
+          <h3 className="font-display text-3xl text-foreground">
+            {section.title}
+          </h3>
+
+      <div className="mt-5 whitespace-pre-line text-lg leading-9 text-foreground/90">
+        {section.content}
+      </div>
+    </section>
+  ))}
+</div>
+
+  </section>
+))}
       </article>
     </>
   );
