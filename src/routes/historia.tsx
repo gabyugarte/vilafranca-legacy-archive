@@ -1,6 +1,8 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { PageHeader } from "@/components/page-header";
-import { MapPin } from "lucide-react";
+import { history } from "@/content/history";
+import { HistoryGallery } from "@/components/history-gallery";
+import { HistoryImage } from "@/components/history-image";
 
 export const Route = createFileRoute("/historia")({
   head: () => ({
@@ -11,7 +13,10 @@ export const Route = createFileRoute("/historia")({
         content:
           "Los orígenes, el crecimiento y el legado espiritual del Barrio Vilafranca de La Iglesia de Jesucristo de los Santos de los Últimos Días.",
       },
-      { property: "og:title", content: "Nuestra Historia — Barrio Vilafranca" },
+      {
+        property: "og:title",
+        content: "Nuestra Historia — Barrio Vilafranca",
+      },
       {
         property: "og:description",
         content: "El origen y el legado del Barrio Vilafranca.",
@@ -26,81 +31,134 @@ function HistoriaPage() {
     <>
       <PageHeader
         eyebrow="Nuestra historia"
-        title="Un barrio, muchas familias, una misma fe"
-        description="Desde su creación, el Barrio Vilafranca ha sido un lugar de reunión, servicio y crecimiento espiritual. Esta es la memoria compartida de sus miembros."
+        title={history.title}
+        description={history.subtitle}
       />
 
-      <article className="mx-auto max-w-3xl space-y-8 px-4 py-16 text-lg leading-relaxed text-foreground/90 sm:px-6">
-        <p className="text-xl italic text-muted-foreground">
-          «Cada barrio tiene una historia. La nuestra empezó con unas pocas
-          familias, mucha fe y el deseo de construir Sion en Vilafranca».
-        </p>
-
-        <section>
-          <h2 className="font-display text-3xl text-foreground">Los inicios</h2>
-          <p className="mt-4 text-base">
-            El Barrio Vilafranca fue organizado como una unidad de La Iglesia de
-            Jesucristo de los Santos de los Últimos Días para reunir a los
-            miembros que residían en la zona. En aquellos primeros años, las
-            reuniones se celebraban con humildad y devoción, y la capilla se
-            fue convirtiendo poco a poco en el corazón de la comunidad.
+      <article className="mx-auto max-w-4xl px-4 py-16 sm:px-6">
+        {/* Cita principal */}
+        <div className="mx-auto max-w-3xl">
+          <p className="text-center text-2xl italic text-muted-foreground">
+            "{history.quote.text}"
           </p>
-        </section>
 
-        <section>
-          <h2 className="font-display text-3xl text-foreground">Crecimiento y consolidación</h2>
-          <p className="mt-4 text-base">
-            Con el paso de los años, las auxiliares se organizaron y
-            fortalecieron: la Sociedad de Socorro, la Primaria, las Mujeres
-            Jóvenes, los Hombres Jóvenes, la Escuela Dominical y el Cuórum de
-            Élderes. Cada una de ellas ha dejado huella en la vida de los
-            miembros y en la historia del barrio.
+          <p className="mt-2 text-center text-sm text-muted-foreground">
+            {history.quote.reference}
           </p>
-        </section>
-
-        <section>
-          <h2 className="font-display text-3xl text-foreground">Un legado vivo</h2>
-          <p className="mt-4 text-base">
-            Hoy seguimos reuniéndonos, sirviendo y creciendo. Los rostros
-            cambian, pero el testimonio de Jesucristo y la unión entre hermanos
-            permanece. Esta web es nuestro intento de preservar y honrar todo lo
-            recibido, y también un lugar para seguir escribiendo la historia que
-            está por venir.
-          </p>
-        </section>
-
-        <div className="rounded-2xl border border-border bg-card p-6 shadow-soft">
-          <div className="flex items-start gap-4">
-            <div className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-secondary text-primary">
-              <MapPin className="h-5 w-5" />
-            </div>
-            <div>
-              <div className="font-display text-xl text-foreground">
-                Evolución del barrio
-              </div>
-              <p className="mt-1 text-sm text-muted-foreground">
-                En futuras versiones incluiremos un mapa interactivo con la
-                evolución geográfica del barrio y de sus límites a lo largo del
-                tiempo.
-              </p>
-            </div>
-          </div>
         </div>
 
-        <div className="flex flex-wrap gap-3 pt-4">
-          <Link
-            to="/linea-tiempo"
-            className="inline-flex items-center rounded-full bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground shadow-soft hover:opacity-95"
+        {/* Capítulos */}
+        {history.chapters.map((chapter) => (
+          <section
+            key={chapter.id}
+            className="mx-auto mt-20 max-w-5xl"
           >
-            Ver la línea del tiempo
-          </Link>
-          <Link
-            to="/pioneros"
-            className="inline-flex items-center rounded-full border border-border bg-background px-5 py-2.5 text-sm font-medium text-foreground hover:bg-secondary"
-          >
-            Reconocimiento a los pioneros
-          </Link>
-        </div>
+            {/* Imagen */}
+<div className="mb-10">
+  <HistoryImage
+    src={chapter.image}
+    alt={chapter.subtitle}
+  />
+</div>
+
+            {/* Número del capítulo */}
+            <p className="text-sm font-semibold uppercase tracking-[0.3em] text-primary">
+              {chapter.title}
+            </p>
+
+            {/* Título */}
+            <h2 className="mt-2 font-display text-5xl text-foreground">
+              {chapter.subtitle}
+            </h2>
+
+            {/* Cita */}
+            <blockquote className="mt-8 rounded-2xl border-l-4 border-primary bg-muted/40 p-8 italic text-xl text-muted-foreground">
+              "{chapter.quote}"
+            </blockquote>
+
+            {/* Secciones */}
+            <div className="mt-12 space-y-16">
+              {chapter.sections.map((section, index) => (
+                <section key={index}>
+                  {/* Línea decorativa */}
+                  <div className="mb-6 h-px w-24 bg-primary/40" />
+
+                  {/* Título */}
+                  <h3 className="font-display text-3xl text-foreground">
+                    {section.title}
+                  </h3>
+
+                  {(() => {
+                    const lines = section.content.trim().split("\n");
+                    const firstLine = lines[0].trim();
+
+                    const hasDate =
+                      /\d{4}/.test(firstLine) ||
+                      firstLine.includes("de") ||
+                      firstLine.includes("Octubre") ||
+                      firstLine.includes("noviembre") ||
+                      firstLine.includes("abril") ||
+                      firstLine.includes("junio");
+
+                    const body = hasDate
+                      ? lines.slice(1).join("\n")
+                      : section.content;
+
+                    return (
+                      <>
+                        {/* Fecha */}
+                        {hasDate && (
+                          <div className="mt-6 inline-block rounded-full border border-primary/30 bg-primary/10 px-5 py-2 text-sm font-semibold uppercase tracking-[0.2em] text-primary">
+                            {firstLine}
+                          </div>
+                        )}
+
+                        {/* Texto */}
+                        <div
+                          className={`mt-6 whitespace-pre-line text-lg leading-9 text-foreground/90 ${
+                            index === 0
+                              ? "first-letter:float-left first-letter:mr-3 first-letter:text-7xl first-letter:font-bold first-letter:leading-none first-letter:text-primary"
+                              : ""
+                          }`}
+                        >
+                          {body}
+                        </div>
+
+                        {/* Cards */}
+                        {section.cards && (
+                          <div className="mt-8 grid gap-4 md:grid-cols-2">
+                            {section.cards.map((card, i) => (
+                              <div
+                                key={i}
+                                className="rounded-2xl border border-primary/20 bg-card p-6 shadow-sm transition hover:shadow-lg"
+                              >
+                                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">
+                                  {card.label}
+                                </p>
+
+                                <p className="mt-2 text-xl font-semibold text-foreground">
+                                  {card.value}
+                                </p>
+                              </div>
+                            ))}
+                          </div>
+                        )}
+
+                        {/* Galería */}
+{section.gallery && (
+  <HistoryGallery
+    images={section.gallery}
+    title={section.title}
+  />
+)}
+                      </>
+                    );
+                  })()}
+                </section>
+              ))}
+            </div>
+          </section>
+        ))}
       </article>
     </>
   );
