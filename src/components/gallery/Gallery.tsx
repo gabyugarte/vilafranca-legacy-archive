@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Lightbox } from "./lightbox";
+import { Lightbox } from "./Lightbox";
 
 type GalleryProps = {
   images: string[];
