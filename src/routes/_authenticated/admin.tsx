@@ -6,6 +6,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useIsAdmin } from "@/lib/use-session";
 import { CATEGORY_LABELS } from "@/lib/queries.functions";
 import { Loader2, Pencil, Plus, Trash2, Upload, LogOut } from "lucide-react";
+import { BishopsAdmin } from "@/components/bishops-admin";
 
 export const Route = createFileRoute("/_authenticated/admin")({
   head: () => ({
@@ -17,8 +18,7 @@ export const Route = createFileRoute("/_authenticated/admin")({
   component: AdminPage,
 });
 
-type Tab = "moderacion" | "eventos" | "galeria";
-
+type Tab = "moderacion" | "eventos" | "galeria" | "obispos";
 function AdminPage() {
   const navigate = useNavigate();
   const { isAdmin, session, loading } = useIsAdmin();
@@ -70,13 +70,13 @@ function AdminPage() {
       <section className="mx-auto max-w-6xl px-4 pb-20 sm:px-6">
         <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
           <div className="inline-flex gap-1 rounded-full bg-muted p-1 text-sm">
-            {(["moderacion", "eventos", "galeria"] as Tab[]).map((t) => (
+            {(["moderacion", "eventos", "galeria", "obispos"] as Tab[]).map((t) => (
               <button
                 key={t}
                 onClick={() => setTab(t)}
                 className={`rounded-full px-4 py-1.5 transition ${tab === t ? "bg-background shadow-soft text-foreground" : "text-muted-foreground"}`}
               >
-                {t === "moderacion" ? "Moderación" : t === "eventos" ? "Eventos" : "Galería"}
+                {t === "moderacion" ? "Moderación" : t === "eventos" ? "Eventos" : t === "galeria" ? "Galería" : "Obispos"}
               </button>
             ))}
           </div>
@@ -88,12 +88,24 @@ function AdminPage() {
           </button>
         </div>
 
-        {tab === "moderacion" ? <ModerationPanel /> : tab === "eventos" ? <EventsAdmin /> : <GalleryAdmin />}
+        {tab === "moderacion" ? <ModerationPanel /> : tab === "eventos" ? <EventsAdmin /> : tab === "galeria" ? <GalleryAdmin /> : <BishopsAdmin />}
       </section>
     </>
   );
 }
+/* -------------------- BISHOPS -------------------- */
 
+type BishopRow = {
+  id: string;
+  name: string;
+  start_date: string | null;
+  end_date: string | null;
+  photo_url: string | null;
+  bio: string | null;
+  counselor_1: string | null;
+  counselor_2: string | null;
+  order_index: number;
+};
 /* -------------------- EVENTS -------------------- */
 
 type EventRow = {
