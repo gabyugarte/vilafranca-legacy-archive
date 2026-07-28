@@ -57,7 +57,7 @@ Primeras familias:
 • Familia Varela
 • Familia Pérez
 • Familia Moya
-• Familia Riojano
+• Familia Rojano
 • Verónica Varela
 • Mari Varela
 • Ángela Moya y Luis Sales
@@ -89,7 +89,7 @@ cards: [
   },
   {
     label: "Presidenta Sociedad de Socorro",
-    value: "María Ángela Porras",
+    value: "María Ángeles Porras",
   },
   {
     label: "Consejera Sociedad de Socorro",
@@ -186,7 +186,7 @@ cards: [
   },
   {
     label: "Posteriormente",
-    value: "Hno. Riojano",
+    value: "Hno. Rojano",
   },
   {
     label: "Posteriormente",
@@ -245,11 +245,11 @@ cards: [
   },
   {
     label: "Primeros misioneros",
-    value: "Francisco Riojano",
+    value: "Francisco Rojano",
   },
   {
     label: "Primeros misioneros",
-    value: "Judith Riojano",
+    value: "Judith Rojano",
   },
   {
     label: "Primeros misioneros",
