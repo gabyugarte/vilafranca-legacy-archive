@@ -4,7 +4,6 @@ import { PageHeader } from "@/components/page-header";
 import { Gallery } from "@/components/gallery";
 import { bishopsQuery } from "@/lib/queries.functions";
 import { UserCircle2 } from "lucide-react";
-import { bishopPhotos } from "@/lib/bishop-photos";
 
 
 export const Route = createFileRoute("/obispos")({
@@ -63,11 +62,22 @@ console.log(bishops);
       {/* Fotografía */}
 <div className="relative border border-primary/15 bg-primary/5 p-6">
 
-  <img
-    src={bishopPhotos[b.name] ?? "/images/bishops/default.jpg"}
-    alt={b.name}
-    className="aspect-[4/5] w-full rounded-2xl object-cover shadow-xl transition duration-500 hover:scale-[1.02] cursor-pointer"
-  />
+{/* <img
+  src={b.photo_url || "/images/bishops/default.jpg"}
+  alt={b.name}
+  className="aspect-[4/5] w-full rounded-2xl object-cover shadow-xl transition duration-500 hover:scale-[1.02] cursor-pointer"
+/> */}
+<img
+  src={b.photo_url ?? ""}
+  alt={b.name}
+  onError={(e) => {
+    console.log("ERROR CARGANDO:", b.photo_url);
+
+    (e.currentTarget as HTMLImageElement).src =
+      "/images/bishops/default.jpg";
+  }}
+  className="aspect-[4/5] w-full rounded-2xl object-cover shadow-xl transition duration-500 hover:scale-[1.02] cursor-pointer"
+/>
 
 </div>
 

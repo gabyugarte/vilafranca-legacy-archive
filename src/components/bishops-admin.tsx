@@ -11,10 +11,13 @@ export function BishopsAdmin() {
   const { data: bishops, isLoading } = useQuery({
     queryKey: ["admin", "bishops"],
     queryFn: async () => {
+      
       const { data, error } = await supabase
         .from("bishops")
         .select("*")
-        .order("order_index");
+        .order("start_date", {
+  ascending: true,
+});
 
       if (error) throw error;
 
@@ -43,9 +46,21 @@ export function BishopsAdmin() {
     <div className="space-y-4">
 
       <div className="flex justify-end">
-        <button
-          className="inline-flex items-center gap-2 rounded-full bg-primary px-4 py-2 text-sm text-primary-foreground"
-        >
+<button
+  onClick={() =>
+    setEditing({
+      name: "",
+      start_date: "",
+      end_date: "",
+      bio: "",
+      counselor_1: "",
+      counselor_2: "",
+      order_index: (bishops?.length ?? 0) + 1,
+      photo_url: "",
+    })
+  }
+  className="inline-flex items-center gap-2 rounded-full bg-primary px-4 py-2 text-sm text-primary-foreground"
+>
           <Plus className="h-4 w-4" />
           Nuevo obispo
         </button>
@@ -140,25 +155,92 @@ function BishopModal({
 
   const [form, setForm] = useState(bishop);
   const [saving, setSaving] = useState(false);
+  const [uploading, setUploading] = useState(false);
 
+  async function uploadPhoto(
+  e: React.ChangeEvent<HTMLInputElement>
+) {
+  const file = e.target.files?.[0];
+
+  if (!file) return;
+
+  setUploading(true);
+
+  const extension = file.name.split(".").pop();
+
+  const filename =
+    `${bishop.id}-${Date.now()}.${extension}`;
+
+  const { error } = await supabase.storage
+    .from("bishops")
+    .upload(filename, file, {
+      upsert: true,
+    });
+
+  if (error) {
+    alert(error.message);
+    setUploading(false);
+    return;
+  }
+
+  const {
+    data: { publicUrl },
+  } = supabase.storage
+    .from("bishops")
+    .getPublicUrl(filename);
+
+  setForm((prev: any) => ({
+    ...prev,
+    photo_url: publicUrl,
+  }));
+
+  setUploading(false);
+}
 
   async function save(e: React.FormEvent) {
     e.preventDefault();
 
     setSaving(true);
 
-const { error } = await supabase
-  .from("bishops")
-  .update({
-    name: form.name,
-    start_date: form.start_date,
-    end_date: form.end_date || null,
-    bio: form.bio || null,
-    counselor_1: form.counselor_1 || null,
-    counselor_2: form.counselor_2 || null,
-  })
-  .eq("id", bishop.id);
+let data;
+let error;
 
+if (bishop.id) {
+  ({ data, error } = await supabase
+    .from("bishops")
+    .update({
+      name: form.name,
+      start_date: form.start_date || null,
+      end_date: form.end_date || null,
+      photo_url: form.photo_url || null,
+      bio: form.bio || null,
+      counselor_1: form.counselor_1 || null,
+      counselor_2: form.counselor_2 || null,
+      order_index: form.order_index,
+      
+    })
+    .eq("id", bishop.id)
+    .select());
+} else {
+  ({ data, error } = await supabase
+    .from("bishops")
+    .insert({
+      name: form.name,
+      start_date: form.start_date || null,
+      end_date: form.end_date || null,
+      bio: form.bio || null,
+      counselor_1: form.counselor_1 || null,
+      counselor_2: form.counselor_2 || null,
+      order_index: form.order_index,
+      photo_url: form.photo_url || null,
+    })
+    .select());
+}
+
+
+console.log("UPDATED:", data);
+console.log("ERROR:", error);
+console.log("FORM:", form);
 
     setSaving(false);
 
@@ -181,7 +263,7 @@ const { error } = await supabase
       >
 
         <h2 className="text-2xl font-bold">
-          Editar obispo
+          {bishop.id ? "Editar obispo" : "Nuevo obispo"}
         </h2>
 
 
@@ -196,7 +278,35 @@ const { error } = await supabase
           }
         />
 
+<input
+  className="w-full rounded-lg border p-2"
+  placeholder="URL de la fotografía"
+  value={form.photo_url ?? ""}
+  onChange={(e) =>
+    setForm({
+      ...form,
+      photo_url: e.target.value,
+    })
+  }
+/>
+<input
+  type="file"
+  accept="image/*"
+  onChange={uploadPhoto}
+/>
+{uploading && (
+  <p className="text-sm text-muted-foreground">
+    Subiendo fotografía...
+  </p>
+)}
 
+{form.photo_url && (
+  <img
+    src={form.photo_url}
+    alt="Vista previa"
+    className="h-40 rounded-xl object-cover border"
+  />
+)}
         <input
           type="date"
           className="w-full rounded-lg border p-2"
