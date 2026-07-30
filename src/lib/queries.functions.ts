@@ -26,11 +26,17 @@ export const fetchEvents = createServerFn({ method: "GET" }).handler(async () =>
 
 export const fetchBishops = createServerFn({ method: "GET" }).handler(async () => {
   const supabase = serverClient();
+
   const { data, error } = await supabase
     .from("bishops")
     .select("*")
-    .order("order_index", { ascending: true });
+    .order("start_date", {
+      ascending: true,
+      nullsFirst: false,
+    });
+
   if (error) throw new Error(error.message);
+
   return data ?? [];
 });
 
