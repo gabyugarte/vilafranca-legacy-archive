@@ -2,6 +2,11 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Loader2, Pencil, Plus, Trash2 } from "lucide-react";
 import { useState } from "react";
+import { ImageUploader } from "@/components/admin/ImageUploader";
+import { TextField } from "@/components/admin/TextField";
+import { DateField } from "@/components/admin/DateField";
+import { TextAreaField } from "@/components/admin/TextAreaField";
+import { InputField } from "@/components/admin/InputField";
 
 export function BishopsAdmin() {
   const qc = useQueryClient();
@@ -130,13 +135,17 @@ export function BishopsAdmin() {
 <BishopModal
   bishop={editing}
   onClose={() => setEditing(null)}
-  onSaved={async () => {
-    setEditing(null);
+onSaved={async () => {
+  setEditing(null);
 
-    await qc.invalidateQueries({
-      queryKey: ["admin", "bishops"],
-    });
-  }}
+  await qc.invalidateQueries({
+    queryKey: ["admin", "bishops"],
+  });
+
+  await qc.invalidateQueries({
+    queryKey: ["bishops"],
+  });
+}}
 />
     )}
     </div>
@@ -155,47 +164,7 @@ function BishopModal({
 
   const [form, setForm] = useState(bishop);
   const [saving, setSaving] = useState(false);
-  const [uploading, setUploading] = useState(false);
 
-  async function uploadPhoto(
-  e: React.ChangeEvent<HTMLInputElement>
-) {
-  const file = e.target.files?.[0];
-
-  if (!file) return;
-
-  setUploading(true);
-
-  const extension = file.name.split(".").pop();
-
-  const filename =
-    `${bishop.id}-${Date.now()}.${extension}`;
-
-  const { error } = await supabase.storage
-    .from("bishops")
-    .upload(filename, file, {
-      upsert: true,
-    });
-
-  if (error) {
-    alert(error.message);
-    setUploading(false);
-    return;
-  }
-
-  const {
-    data: { publicUrl },
-  } = supabase.storage
-    .from("bishops")
-    .getPublicUrl(filename);
-
-  setForm((prev: any) => ({
-    ...prev,
-    photo_url: publicUrl,
-  }));
-
-  setUploading(false);
-}
 
   async function save(e: React.FormEvent) {
     e.preventDefault();
@@ -267,110 +236,83 @@ console.log("FORM:", form);
         </h2>
 
 
-        <input
-          className="w-full rounded-lg border p-2"
-          value={form.name ?? ""}
-          onChange={(e) =>
-            setForm({
-              ...form,
-              name: e.target.value,
-            })
-          }
-        />
-
-<input
-  className="w-full rounded-lg border p-2"
-  placeholder="URL de la fotografía"
-  value={form.photo_url ?? ""}
-  onChange={(e) =>
+<TextField
+  label="Nombre del obispo"
+  value={form.name ?? ""}
+  onChange={(value) =>
     setForm({
       ...form,
-      photo_url: e.target.value,
+      name: value,
     })
   }
 />
-<input
-  type="file"
-  accept="image/*"
-  onChange={uploadPhoto}
+
+<ImageUploader
+  bucket="bishops"
+  value={form.photo_url}
+  onChange={(url) =>
+    setForm({
+      ...form,
+      photo_url: url,
+    })
+  }
 />
-{uploading && (
-  <p className="text-sm text-muted-foreground">
-    Subiendo fotografía...
-  </p>
-)}
+<DateField
+  label="Inicio"
+  value={form.start_date ?? ""}
+  onChange={(value) =>
+    setForm({
+      ...form,
+      start_date: value,
+    })
+  }
+/>
 
-{form.photo_url && (
-  <img
-    src={form.photo_url}
-    alt="Vista previa"
-    className="h-40 rounded-xl object-cover border"
-  />
-)}
-        <input
-          type="date"
-          className="w-full rounded-lg border p-2"
-          value={form.start_date ?? ""}
-          onChange={(e) =>
-            setForm({
-              ...form,
-              start_date: e.target.value,
-            })
-          }
-        />
+<DateField
+  label="Fin"
+  value={form.end_date ?? ""}
+  onChange={(value) =>
+    setForm({
+      ...form,
+      end_date: value,
+    })
+  }
+/>
 
 
-        <input
-          type="date"
-          className="w-full rounded-lg border p-2"
-          value={form.end_date ?? ""}
-          onChange={(e) =>
-            setForm({
-              ...form,
-              end_date: e.target.value,
-            })
-          }
-        />
+<TextAreaField
+  label="Biografía"
+  value={form.bio}
+  onChange={(value) =>
+    setForm({
+      ...form,
+      bio: value,
+    })
+  }
+/>
 
 
-        <textarea
-          className="w-full rounded-lg border p-2"
-          placeholder="Biografía"
-          value={form.bio ?? ""}
-          onChange={(e) =>
-            setForm({
-              ...form,
-              bio: e.target.value,
-            })
-          }
-        />
+<InputField
+  label="Primer consejero"
+  value={form.counselor_1}
+  onChange={(value) =>
+    setForm({
+      ...form,
+      counselor_1: value,
+    })
+  }
+/>
 
-
-        <input
-          className="w-full rounded-lg border p-2"
-          placeholder="Primer consejero"
-          value={form.counselor_1 ?? ""}
-          onChange={(e) =>
-            setForm({
-              ...form,
-              counselor_1: e.target.value,
-            })
-          }
-        />
-
-
-        <input
-          className="w-full rounded-lg border p-2"
-          placeholder="Segundo consejero"
-          value={form.counselor_2 ?? ""}
-          onChange={(e) =>
-            setForm({
-              ...form,
-              counselor_2: e.target.value,
-            })
-          }
-        />
-
+<InputField
+  label="Segundo consejero"
+  value={form.counselor_2}
+  onChange={(value) =>
+    setForm({
+      ...form,
+      counselor_2: value,
+    })
+  }
+/>
 
         <div className="flex justify-end gap-2">
 

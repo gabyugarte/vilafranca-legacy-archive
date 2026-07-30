@@ -54,7 +54,7 @@ console.log(bishops);
       <section className="mx-auto max-w-4xl px-4 py-16 sm:px-6">
         <div className="mx-auto space-y-16">
           {bishops.map((b) => (
-<li key={b.id}>
+<div key={b.id}>
   <article className="overflow-hidden rounded-3xl border border-border bg-card shadow-soft transition-all duration-300 hover:shadow-xl">
 
     <div className="grid md:grid-cols-[280px_1fr]">
@@ -142,7 +142,7 @@ console.log(bishops);
     </div>
 
   </article>
-</li>
+</div>
           ))}
         </div>
       </section>
