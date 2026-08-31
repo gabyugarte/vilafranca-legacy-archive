@@ -7,6 +7,7 @@ import { useIsAdmin } from "@/lib/use-session";
 import { CATEGORY_LABELS } from "@/lib/queries.functions";
 import { Loader2, Pencil, Plus, Trash2, Upload, LogOut } from "lucide-react";
 import { BishopsAdmin } from "@/components/bishops-admin";
+import { HistoryAdmin } from "@/components/history-admin";
 
 export const Route = createFileRoute("/_authenticated/admin")({
   head: () => ({
@@ -18,8 +19,12 @@ export const Route = createFileRoute("/_authenticated/admin")({
   component: AdminPage,
 });
 
-type Tab = "moderacion" | "eventos" | "galeria" | "obispos";
-function AdminPage() {
+type Tab =
+  | "moderacion"
+  | "eventos"
+  | "galeria"
+  | "obispos"
+  | "historia";function AdminPage() {
   const navigate = useNavigate();
   const { isAdmin, session, loading } = useIsAdmin();
   const [tab, setTab] = useState<Tab>("moderacion");
@@ -70,13 +75,13 @@ function AdminPage() {
       <section className="mx-auto max-w-6xl px-4 pb-20 sm:px-6">
         <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
           <div className="inline-flex gap-1 rounded-full bg-muted p-1 text-sm">
-            {(["moderacion", "eventos", "galeria", "obispos"] as Tab[]).map((t) => (
+            {(["moderacion", "eventos", "galeria", "obispos", "historia"] as Tab[]).map((t) => (
               <button
                 key={t}
                 onClick={() => setTab(t)}
                 className={`rounded-full px-4 py-1.5 transition ${tab === t ? "bg-background shadow-soft text-foreground" : "text-muted-foreground"}`}
               >
-                {t === "moderacion" ? "Moderación" : t === "eventos" ? "Eventos" : t === "galeria" ? "Galería" : "Obispos"}
+                {t === "moderacion" ? "Moderación" : t === "eventos" ? "Eventos" : t === "galeria" ? "Galería" : t === "obispos" ? "Obispos" : "Historia"}
               </button>
             ))}
           </div>
@@ -88,7 +93,19 @@ function AdminPage() {
           </button>
         </div>
 
-        {tab === "moderacion" ? <ModerationPanel /> : tab === "eventos" ? <EventsAdmin /> : tab === "galeria" ? <GalleryAdmin /> : <BishopsAdmin />}
+{
+  tab === "moderacion" ? (
+    <ModerationPanel />
+  ) : tab === "eventos" ? (
+    <EventsAdmin />
+  ) : tab === "galeria" ? (
+    <GalleryAdmin />
+  ) : tab === "obispos" ? (
+    <BishopsAdmin />
+  ) : (
+    <HistoryAdmin />
+  )
+}      
       </section>
     </>
   );

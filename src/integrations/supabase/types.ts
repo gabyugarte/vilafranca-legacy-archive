@@ -50,6 +50,93 @@ export type Database = {
         }
         Relationships: []
       }
+      history_chapters: {
+  Row: {
+    id: string
+    title: string
+    subtitle: string | null
+    year: number | null
+    content: string | null
+    cover_image: string | null
+    order_index: number
+    status: string | null
+    submitted_by: string | null
+    created_at: string
+    updated_at: string
+  }
+  Insert: {
+    id?: string
+    title: string
+    subtitle?: string | null
+    year?: number | null
+    content?: string | null
+    cover_image?: string | null
+    order_index?: number
+    status?: string | null
+    submitted_by?: string | null
+    created_at?: string
+    updated_at?: string
+  }
+Update: {
+  id?: string
+  title?: string
+  subtitle?: string | null
+  year?: number | null
+  content?: string | null
+  cover_image?: string | null
+  order_index?: number
+  status?: string | null
+  submitted_by?: string | null
+  created_at?: string
+  updated_at?: string
+}
+  Relationships: []
+}
+history_blocks: {
+  Row: {
+    id: string
+    chapter_id: string
+    type: string
+    content: string | null
+    caption: string | null
+    order_index: number
+    created_at: string
+    updated_at: string
+  }
+
+  Insert: {
+    id?: string
+    chapter_id: string
+    type: string
+    content?: string | null
+    caption?: string | null
+    order_index?: number
+    created_at?: string
+    updated_at?: string
+  }
+
+  Update: {
+    id?: string
+    chapter_id?: string
+    type?: string
+    content?: string | null
+    caption?: string | null
+    order_index?: number
+    created_at?: string
+    updated_at?: string
+  }
+
+  Relationships: [
+    {
+      foreignKeyName: "history_blocks_chapter_id_fkey"
+      columns: ["chapter_id"]
+      isOneToOne: false
+      referencedRelation: "history_chapters"
+      referencedColumns: ["id"]
+    }
+  ]
+}
+
       branch_presidents: {
         Row: {
           bio: string | null

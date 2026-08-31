@@ -113,6 +113,20 @@ export const fetchGallery = createServerFn({ method: "GET" }).handler(async () =
   return data ?? [];
 });
 
+export const fetchHistory = createServerFn({ method: "GET" }).handler(async () => {
+  const supabase = serverClient();
+
+  const { data, error } = await supabase
+    .from("history_chapters")
+    .select("*")
+    .eq("status", "approved")
+    .order("order_index", { ascending: true });
+
+  if (error) throw new Error(error.message);
+
+  return data ?? [];
+});
+
 // Query options
 export const eventsQuery = queryOptions({
   queryKey: ["events"],
@@ -149,6 +163,10 @@ export const documentsQuery = queryOptions({
 export const galleryQuery = queryOptions({
   queryKey: ["gallery"],
   queryFn: () => fetchGallery(),
+});
+export const historyQuery = queryOptions({
+  queryKey: ["history"],
+  queryFn: () => fetchHistory(),
 });
 
 export const CATEGORY_LABELS: Record<string, string> = {
