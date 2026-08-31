@@ -251,6 +251,89 @@ export type Database = {
         }
         Relationships: []
       }
+      history_blocks: {
+        Row: {
+          caption: string | null
+          chapter_id: string
+          content: string | null
+          created_at: string
+          id: string
+          order_index: number
+          type: string
+          updated_at: string
+        }
+        Insert: {
+          caption?: string | null
+          chapter_id: string
+          content?: string | null
+          created_at?: string
+          id?: string
+          order_index?: number
+          type: string
+          updated_at?: string
+        }
+        Update: {
+          caption?: string | null
+          chapter_id?: string
+          content?: string | null
+          created_at?: string
+          id?: string
+          order_index?: number
+          type?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "history_blocks_chapter_id_fkey"
+            columns: ["chapter_id"]
+            isOneToOne: false
+            referencedRelation: "history_chapters"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      history_chapters: {
+        Row: {
+          content: string | null
+          cover_image: string | null
+          created_at: string | null
+          id: string
+          order_index: number | null
+          status: string | null
+          submitted_by: string | null
+          subtitle: string | null
+          title: string
+          updated_at: string | null
+          year: number | null
+        }
+        Insert: {
+          content?: string | null
+          cover_image?: string | null
+          created_at?: string | null
+          id?: string
+          order_index?: number | null
+          status?: string | null
+          submitted_by?: string | null
+          subtitle?: string | null
+          title: string
+          updated_at?: string | null
+          year?: number | null
+        }
+        Update: {
+          content?: string | null
+          cover_image?: string | null
+          created_at?: string | null
+          id?: string
+          order_index?: number | null
+          status?: string | null
+          submitted_by?: string | null
+          subtitle?: string | null
+          title?: string
+          updated_at?: string | null
+          year?: number | null
+        }
+        Relationships: []
+      }
       interviews: {
         Row: {
           created_at: string
