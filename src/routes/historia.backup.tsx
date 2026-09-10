@@ -234,7 +234,7 @@ const historyQuery = {
   queryFn: () => fetchHistory(),
 };
 
-export const Route = createFileRoute("/historia")({
+export const Route = createFileRoute("/historia/backup")({
   loader: ({ context }) =>
     context.queryClient.ensureQueryData(historyQuery),
 
@@ -334,43 +334,83 @@ function HistoriaPage() {
 
                 {chapter.blocks.map((block, index) => {
 
-                  if (block.type === "text") {
-                    return (
-                      <section key={block.id}>
-                        <div className="mb-6 h-px w-24 bg-primary/40" />
+if (block.type === "text") {
+  // Tarjetas de nombres
+  if (block.caption?.startsWith("card:")) {
+    const label = block.caption.replace("card:", "");
 
-                        <div
-                          className={`whitespace-pre-line text-lg leading-9 text-foreground/90 ${
-                            index === 0
-                              ? "first-letter:float-left first-letter:mr-3 first-letter:text-7xl first-letter:font-bold first-letter:leading-none first-letter:text-primary"
-                              : ""
-                          }`}
-                        >
-                          {block.content}
-                        </div>
-                      </section>
-                    );
-                  }
+    return (
+      <div
+        key={block.id}
+        className="rounded-2xl border border-primary/20 bg-card p-6 shadow-sm transition hover:shadow-lg"
+      >
+        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">
+          {label}
+        </p>
 
-                  if (block.type === "image") {
-                    return (
-                      <section key={block.id}>
-                        <HistoryImage
-                          src={block.content ?? ""}
-                          alt={
-                            block.caption ??
-                            "Imagen histórica del Barrio Vilafranca"
-                          }
-                        />
+        <p className="mt-2 text-xl font-semibold text-foreground">
+          {block.content}
+        </p>
+      </div>
+    );
+  }
 
-                        {block.caption && (
-                          <p className="mt-3 text-center text-sm italic text-muted-foreground">
-                            {block.caption}
-                          </p>
-                        )}
-                      </section>
-                    );
-                  }
+  // Texto normal
+  return (
+    <section key={block.id}>
+      <div className="mb-6 h-px w-24 bg-primary/40" />
+
+      <div
+        className={`whitespace-pre-line text-lg leading-9 text-foreground/90 ${
+          index === 0
+            ? "first-letter:float-left first-letter:mr-3 first-letter:text-7xl first-letter:font-bold first-letter:leading-none first-letter:text-primary"
+            : ""
+        }`}
+      >
+        {block.content}
+      </div>
+    </section>
+  );
+}
+
+if (block.type === "text") {
+  // Tarjetas de nombres
+  if (block.caption?.startsWith("card:")) {
+    const label = block.caption.replace("card:", "");
+
+    return (
+      <div
+        key={block.id}
+        className="rounded-2xl border border-primary/20 bg-card p-6 shadow-sm transition hover:shadow-lg"
+      >
+        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">
+          {label}
+        </p>
+
+        <p className="mt-2 text-xl font-semibold text-foreground">
+          {block.content}
+        </p>
+      </div>
+    );
+  }
+
+  // Texto normal
+  return (
+    <section key={block.id}>
+      <div className="mb-6 h-px w-24 bg-primary/40" />
+
+      <div
+        className={`whitespace-pre-line text-lg leading-9 text-foreground/90 ${
+          index === 0
+            ? "first-letter:float-left first-letter:mr-3 first-letter:text-7xl first-letter:font-bold first-letter:leading-none first-letter:text-primary"
+            : ""
+        }`}
+      >
+        {block.content}
+      </div>
+    </section>
+  );
+}
 
                   if (block.type === "gallery") {
                     let images: string[] = [];
@@ -396,16 +436,6 @@ function HistoriaPage() {
                             "Galería histórica"
                           }
                         />
-                      </section>
-                    );
-                  }
-
-                  if (block.type === "quote") {
-                    return (
-                      <section key={block.id}>
-                        <blockquote className="rounded-2xl border-l-4 border-primary bg-muted/40 p-8 text-xl italic text-muted-foreground">
-                          "{block.content}"
-                        </blockquote>
                       </section>
                     );
                   }

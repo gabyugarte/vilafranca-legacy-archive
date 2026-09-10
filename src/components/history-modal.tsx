@@ -57,7 +57,7 @@ const payload: HistoryInsert = {
   year: form.year ? Number(form.year) : null,
   content: form.content || null,
   cover_image: form.cover_image || null,
-  order_index: Number(form.order_index ?? 1),
+  order_index: orderIndex,
   status: form.id
     ? form.status ?? "pending"
     : "pending",
@@ -88,9 +88,9 @@ const payload: HistoryInsert = {
 }
 
 return (
-  <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4 overflow-y-auto">
+<div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
 
-    <div className="w-full max-w-4xl rounded-2xl bg-background p-6 space-y-6">
+  <div className="w-full max-w-4xl max-h-[90vh] overflow-y-auto rounded-2xl bg-background p-6 space-y-6">
 
       <form
         onSubmit={save}

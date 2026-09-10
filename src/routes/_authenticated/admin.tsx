@@ -30,13 +30,15 @@ type Tab =
   const [tab, setTab] = useState<Tab>("moderacion");
 
   useEffect(() => {
-    if (!loading && !session) navigate({ to: "/auth" });
-  }, [loading, session, navigate]);
-
-  async function signOut() {
-    await supabase.auth.signOut();
-    navigate({ to: "/auth" });
+  if (!loading && !session) {
+    navigate({ to: "/auth", search: { next: "" } });
   }
+}, [loading, session, navigate]);
+
+async function signOut() {
+  await supabase.auth.signOut();
+  navigate({ to: "/auth", search: { next: "" } });
+}
 
   if (loading) {
     return (
@@ -623,6 +625,7 @@ const MOD_TABLES = [
   { key: "historical_documents", label: "Documento", titleCol: "title", extraCol: "description", imgCol: "thumbnail_url" },
   { key: "interviews", label: "Entrevista", titleCol: "title", extraCol: "summary", imgCol: "thumbnail_url" },
   { key: "events", label: "Evento", titleCol: "title", extraCol: "description", imgCol: "cover_image_url" },
+  { key: "history_chapters", label: "Capítulo histórico", titleCol: "title", extraCol: "subtitle", imgCol: "cover_image" },
 ] as const;
 
 type PendingItem = {
@@ -638,6 +641,7 @@ type PendingItem = {
 
 function ModerationPanel() {
   const qc = useQueryClient();
+  const [previewItem, setPreviewItem] = useState<PendingItem | null>(null);
   const { data, isLoading } = useQuery({
     queryKey: ["admin", "moderation"],
     queryFn: async (): Promise<PendingItem[]> => {
@@ -669,7 +673,25 @@ function ModerationPanel() {
     const { error } = await supabase.from(item.table).update({ status } as never).eq("id", item.id);
     if (error) return alert(error.message);
     qc.invalidateQueries({ queryKey: ["admin", "moderation"] });
-    qc.invalidateQueries({ queryKey: [item.table === "gallery_photos" ? "gallery" : item.table === "faith_stories" ? "stories" : item.table === "historical_documents" ? "documents" : item.table === "interviews" ? "interviews" : "events"] });
+    const queryKey =
+      item.table === "gallery_photos"
+        ? "gallery"
+        : item.table === "faith_stories"
+        ? "stories"
+        : item.table === "historical_documents"
+        ? "documents"
+        : item.table === "interviews"
+        ? "interviews"
+        : item.table === "history_chapters"
+        ? "history"
+        : "events";
+
+    qc.invalidateQueries({
+      queryKey: [queryKey],
+    });  }
+
+  async function openPreview(item: PendingItem) {
+    setPreviewItem(item);
   }
 
   async function remove(item: PendingItem) {
@@ -714,9 +736,18 @@ function ModerationPanel() {
                 <p className="mt-1 line-clamp-3 text-sm text-muted-foreground">{item.extra}</p>
               )}
             </div>
-            <div className="flex shrink-0 flex-col gap-2">
-              <button
-                onClick={() => decide(item, "approved")}
+       <div className="flex shrink-0 flex-col gap-2">
+          {item.table === "history_chapters" && (
+            <button
+              onClick={() => openPreview(item)}
+              className="rounded-full border border-primary/30 px-4 py-1.5 text-sm text-primary hover:bg-primary/10"
+            >
+              👁️ Vista previa
+            </button>
+          )}
+
+  <button
+    onClick={() => decide(item, "approved")}
                 className="rounded-full bg-primary px-4 py-1.5 text-sm text-primary-foreground shadow-soft hover:opacity-90"
               >
                 Aprobar
@@ -737,9 +768,249 @@ function ModerationPanel() {
           </div>
         </article>
       ))}
+
+      {previewItem && (
+        <HistoryPreviewModal
+          item={previewItem}
+          onClose={() => setPreviewItem(null)}
+        />
+      )}
     </div>
   );
 }
+function HistoryPreviewModal({
+  item,
+  onClose,
+}: {
+  item: PendingItem;
+  onClose: () => void;
+}) {
+  const { data: chapter, isLoading } = useQuery({
+    queryKey: ["admin", "history-preview", item.id],
+    queryFn: async () => {
+      const { data: chapterData, error: chapterError } = await supabase
+        .from("history_chapters")
+        .select("*")
+        .eq("id", item.id)
+        .single();
 
+      if (chapterError) throw chapterError;
+
+      const { data: blocks, error: blocksError } = await supabase
+        .from("history_blocks")
+        .select("*")
+        .eq("chapter_id", item.id)
+        .order("order_index", { ascending: true });
+
+      if (blocksError) throw blocksError;
+
+      return {
+        ...chapterData,
+        blocks: blocks ?? [],
+      };
+    },
+  });
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-foreground/40 p-4 backdrop-blur-sm">
+      <div className="my-8 w-full max-w-5xl rounded-2xl bg-background shadow-elegant">
+        
+        <div className="sticky top-0 z-10 flex items-center justify-between border-b border-border bg-background px-6 py-4">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">
+              Vista previa
+            </p>
+            <h2 className="font-display text-2xl text-foreground">
+              Cómo se verá antes de publicar
+            </h2>
+          </div>
+
+          <button
+            onClick={onClose}
+            className="rounded-full border border-border px-4 py-2 text-sm hover:bg-secondary"
+          >
+            Cerrar
+          </button>
+        </div>
+
+        {isLoading ? (
+          <div className="grid min-h-[300px] place-items-center">
+            <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+          </div>
+        ) : !chapter ? (
+          <div className="p-10 text-center text-muted-foreground">
+            No se pudo cargar la vista previa.
+          </div>
+        ) : (
+          <div className="max-h-[80vh] overflow-y-auto px-6 py-8">
+            <article className="mx-auto max-w-5xl">
+              
+              {chapter.cover_image && (
+                <div className="mb-10">
+                  <img
+                    src={chapter.cover_image}
+                    alt={chapter.subtitle ?? chapter.title}
+                    className="w-full rounded-2xl object-cover shadow-soft"
+                  />
+                </div>
+              )}
+
+              <p className="text-sm font-semibold uppercase tracking-[0.3em] text-primary">
+                {chapter.title}
+              </p>
+
+              {chapter.subtitle && (
+                <h1 className="mt-2 font-display text-5xl text-foreground">
+                  {chapter.subtitle}
+                </h1>
+              )}
+
+              {chapter.content && (
+                <blockquote className="mt-8 rounded-2xl border-l-4 border-primary bg-muted/40 p-8 italic text-xl text-muted-foreground">
+                  "{chapter.content}"
+                </blockquote>
+              )}
+
+              <div className="mt-12 space-y-12">
+                {chapter.blocks.map((block: any, index: number) => {
+                  
+                  if (
+                    block.type === "text" &&
+                    block.caption?.startsWith("card:")
+                  ) {
+                    const label = block.caption.replace("card:", "");
+
+                    return (
+                      <div
+                        key={block.id}
+                        className="rounded-2xl border border-primary/20 bg-card p-6 shadow-sm"
+                      >
+                        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">
+                          {label}
+                        </p>
+
+                        <p className="mt-2 text-xl font-semibold text-foreground">
+                          {block.content}
+                        </p>
+                      </div>
+                    );
+                  }
+
+                  if (block.type === "text") {
+                    return (
+                      <section key={block.id}>
+                        {block.caption && (
+                          <h2 className="mb-4 font-display text-3xl text-foreground">
+                            {block.caption}
+                          </h2>
+                        )}
+
+                        <div className="mb-6 h-px w-24 bg-primary/40" />
+
+                        <div
+                          className={`whitespace-pre-line text-lg leading-9 text-foreground/90 ${
+                            index === 0
+                              ? "first-letter:float-left first-letter:mr-3 first-letter:text-7xl first-letter:font-bold first-letter:leading-none first-letter:text-primary"
+                              : ""
+                          }`}
+                        >
+                          {block.content}
+                        </div>
+                      </section>
+                    );
+                  }
+
+                  if (block.type === "gallery") {
+                    let images: string[] = [];
+
+                    try {
+                      images = JSON.parse(block.content ?? "[]");
+                    } catch {
+                      images = [];
+                    }
+
+                    if (!images.length) return null;
+
+                    return (
+                      <section key={block.id}>
+                        <h2 className="mb-6 font-display text-3xl text-foreground">
+                          {block.caption || "Galería histórica"}
+                        </h2>
+
+                        <div className="grid gap-4 sm:grid-cols-2">
+                          {images.map((image, imageIndex) => (
+                            <img
+                              key={`${image}-${imageIndex}`}
+                              src={image}
+                              alt=""
+                              className="w-full rounded-xl object-cover"
+                            />
+                          ))}
+                        </div>
+                      </section>
+                    );
+                  }
+
+                  if (block.type === "document") {
+                    return (
+                      <section
+                        key={block.id}
+                        className="rounded-2xl border border-border bg-card p-6"
+                      >
+                        <div className="flex items-center gap-4">
+                          <div className="text-3xl">📄</div>
+
+                          <div>
+                            <p className="font-semibold text-foreground">
+                              {block.caption || "Documento histórico"}
+                            </p>
+
+                            {block.content && (
+                              <p className="mt-1 text-sm text-muted-foreground">
+                                Documento adjunto
+                              </p>
+                            )}
+                          </div>
+                        </div>
+                      </section>
+                    );
+                  }
+
+                  if (block.type === "video") {
+                    return (
+                      <section
+                        key={block.id}
+                        className="rounded-2xl border border-border bg-card p-6"
+                      >
+                        <div className="flex items-center gap-4">
+                          <div className="text-3xl">🎥</div>
+
+                          <div>
+                            <p className="font-semibold text-foreground">
+                              {block.caption || "Vídeo histórico"}
+                            </p>
+
+                            {block.content && (
+                              <p className="mt-1 text-sm text-muted-foreground">
+                                Vídeo adjunto
+                              </p>
+                            )}
+                          </div>
+                        </div>
+                      </section>
+                    );
+                  }
+
+                  return null;
+                })}
+              </div>
+
+            </article>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
 // Silence unused import warning for useMemo (kept for future filters).
 void useMemo;

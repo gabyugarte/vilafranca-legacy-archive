@@ -9,12 +9,53 @@ type Props = {
   chapterId: string;
 };
 
+function parseGalleryContent(content: string | null) {
+  try {
+    const parsed = JSON.parse(content || "[]");
+
+    // Formato nuevo
+    if (
+      parsed &&
+      !Array.isArray(parsed) &&
+      typeof parsed === "object"
+    ) {
+      return {
+        images: Array.isArray(parsed.images) ? parsed.images : [],
+        description:
+          typeof parsed.description === "string"
+            ? parsed.description
+            : "",
+      };
+    }
+
+    // Formato antiguo
+    if (Array.isArray(parsed)) {
+      return {
+        images: parsed,
+        description: "",
+      };
+    }
+
+    return {
+      images: [],
+      description: "",
+    };
+  } catch {
+    return {
+      images: [],
+      description: "",
+    };
+  }
+}
+
 export function HistoryBlocksEditor({
   chapterId,
 }: Props) {
   const [adding, setAdding] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editingContent, setEditingContent] = useState("");
+  const [editingCaption, setEditingCaption] = useState("");
+  const [editingDescription, setEditingDescription] = useState("");
   const [editingType, setEditingType] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
   const queryClient = useQueryClient();
@@ -83,6 +124,7 @@ async function addImageBlock() {
   setAdding(false);
   setEditingId(data.id);
   setEditingContent(data.content ?? "");
+  setEditingCaption(data.caption ?? "");
   setEditingType("image");
 }
 
@@ -173,7 +215,10 @@ async function addGalleryBlock() {
     .insert({
       chapter_id: chapterId,
       type: "gallery",
-      content: "[]",
+      content: JSON.stringify({
+      description: "",
+      images: [],
+    }),
       order_index: (blocks?.length ?? 0) + 1,
     })
     .select()
@@ -188,21 +233,42 @@ async function addGalleryBlock() {
     queryKey: ["history-blocks", chapterId],
   });
 
-  setAdding(false);
-  setEditingId(data.id);
-  setEditingContent(data.content ?? "[]");
-  setEditingType("gallery");
+setAdding(false);
+setEditingId(data.id);
+setEditingContent("[]");
+setEditingCaption(data.caption ?? "");
+setEditingDescription("");
+setEditingType("gallery");
 }
 
- async function saveBlock(id: string) {
+
+async function saveBlock(id: string) {
   setSaving(true);
 
-  const { error } = await supabase
-    .from("history_blocks")
-    .update({
-      content: editingContent,
-    })
-    .eq("id", id);
+let contentToSave = editingContent;
+
+if (editingType === "gallery") {
+  let galleryImages: string[] = [];
+
+  try {
+    galleryImages = JSON.parse(editingContent || "[]");
+  } catch {
+    galleryImages = [];
+  }
+
+  contentToSave = JSON.stringify({
+    description: editingDescription,
+    images: galleryImages,
+  });
+}
+
+const { error } = await supabase
+  .from("history_blocks")
+  .update({
+    content: contentToSave,
+    caption: editingCaption || null,
+  })
+  .eq("id", id);
 
   setSaving(false);
 
@@ -215,8 +281,13 @@ async function addGalleryBlock() {
     queryKey: ["history-blocks", chapterId],
   });
 
+  await queryClient.invalidateQueries({
+    queryKey: ["history-chapter", chapterId],
+  });
+
   setEditingId(null);
   setEditingContent("");
+  setEditingCaption("");
   setEditingType(null);
 }
 
@@ -516,11 +587,20 @@ async function addGalleryBlock() {
 
     <button
       type="button"
-      onClick={() => {
-        setEditingId(block.id);
-        setEditingContent(block.content ?? "");
-        setEditingType(block.type);
-      }}
+onClick={() => {
+  setEditingId(block.id);
+  setEditingCaption(block.caption ?? "");
+  setEditingType(block.type);
+
+  if (block.type === "gallery") {
+    const gallery = parseGalleryContent(block.content);
+    setEditingContent(JSON.stringify(gallery.images));
+    setEditingDescription(gallery.description);
+  } else {
+    setEditingContent(block.content ?? "");
+    setEditingDescription("");
+  }
+}}
       className="rounded-xl border px-4 py-2 text-sm hover:bg-muted"
     >
       ✏️ Editar
@@ -544,6 +624,7 @@ async function addGalleryBlock() {
 
 {editingType === "image" ? (
   <div className="space-y-4">
+
     <ImageUploader
       bucket="media"
       value={editingContent}
@@ -559,6 +640,24 @@ async function addGalleryBlock() {
         />
       </div>
     )}
+
+    <div className="space-y-2">
+      <label className="text-sm font-medium">
+        Pie de foto / descripción
+      </label>
+
+      <textarea
+        value={editingCaption}
+        onChange={(e) => setEditingCaption(e.target.value)}
+        placeholder="Describe esta imagen histórica..."
+        className="min-h-[90px] w-full rounded-xl border bg-background p-3 text-sm outline-none focus:ring-2 focus:ring-primary"
+      />
+
+      <p className="text-xs text-muted-foreground">
+        Puedes indicar quién aparece, qué actividad es, dónde o cuándo fue tomada, o cualquier otro dato histórico relevante.
+      </p>
+    </div>
+
   </div>
 ) : editingType === "document" ? (
   <DocumentUploader
@@ -593,6 +692,39 @@ async function addGalleryBlock() {
 
   <div className="space-y-4">
 
+    <div className="space-y-2">
+      <label className="text-sm font-medium">
+        Título de la galería
+      </label>
+
+      <input
+        type="text"
+        value={editingCaption}
+        onChange={(e) => setEditingCaption(e.target.value)}
+        placeholder="Ej.: Actividades del Barrio Vilafranca"
+        className="w-full rounded-xl border bg-background p-3 text-sm outline-none focus:ring-2 focus:ring-primary"
+      />
+
+      <p className="text-xs text-muted-foreground">
+        Escribe un título que identifique las fotografías de esta galería.
+      </p>
+    </div>
+<div className="space-y-2">
+  <label className="text-sm font-medium">
+    Descripción de la galería
+  </label>
+
+  <textarea
+    value={editingDescription}
+    onChange={(e) => setEditingDescription(e.target.value)}
+    placeholder="Ej.: Fotografías de las actividades realizadas por los miembros del barrio durante este período."
+    className="min-h-[90px] w-full rounded-xl border bg-background p-3 text-sm outline-none focus:ring-2 focus:ring-primary"
+  />
+
+  <p className="text-xs text-muted-foreground">
+    Puedes explicar brevemente qué muestran las fotografías o aportar información histórica sobre ellas.
+  </p>
+</div>
     <div>
       <p className="text-sm font-medium">
         Imágenes de la galería
@@ -606,14 +738,7 @@ async function addGalleryBlock() {
     <div className="space-y-4">
 
       {(() => {
-        let galleryImages: string[] = [];
-
-        try {
-          galleryImages = JSON.parse(editingContent || "[]");
-        } catch {
-          galleryImages = [];
-        }
-
+const galleryImages: string[] = parseGalleryContent(editingContent).images;
         return galleryImages.map((url, index) => (
           <div
             key={`${url}-${index}`}
@@ -666,14 +791,8 @@ async function addGalleryBlock() {
     <button
       type="button"
       onClick={() => {
-        let galleryImages: string[] = [];
-
-        try {
-          galleryImages = JSON.parse(editingContent || "[]");
-        } catch {
-          galleryImages = [];
-        }
-
+const galleryImages: string[] =
+  parseGalleryContent(editingContent).images;
         setEditingContent(
           JSON.stringify([...galleryImages, ""])
         );
@@ -766,11 +885,12 @@ async function addGalleryBlock() {
         <div className="mt-3 flex justify-end gap-2">
           <button
             type="button"
-            onClick={() => {
-              setEditingId(block.id);
-              setEditingContent(block.content ?? "");
-              setEditingType(block.type);
-            }}
+onClick={() => {
+  setEditingId(block.id);
+  setEditingContent(block.content ?? "");
+  setEditingCaption(block.caption ?? "");
+  setEditingType(block.type);
+}}
             className="rounded-xl border px-4 py-2 text-sm hover:bg-muted"
           >
             ✏️ Editar

@@ -300,6 +300,17 @@ Esta labor era coordinada por Ángela Duque y Francisco Ibáñez Marruecos.
 
 Para muchos miembros, la obra vicaria dejó de ser simplemente una tarea para convertirse en una experiencia profundamente espiritual que fortaleció su testimonio.
 `,
+
+  cards: [
+    {
+      label: "Coordinadora de Historia Familiar",
+      value: "Ángela Duque",
+    },
+    {
+      label: "Coordinador de Historia Familiar",
+      value: "Francisco Ibáñez Marruecos",
+    },
+  ],
 },
 {
   title: "El sueño de una capilla propia",
@@ -311,6 +322,17 @@ Durante años los miembros ayunaron, oraron y trabajaron unidos para hacerlo rea
 
 El obispo Pere Borrut, junto con el presidente de estaca Ferran Silvestre, lideraron las gestiones necesarias para conseguir los permisos de construcción.
 `,
+
+  cards: [
+    {
+      label: "Obispo",
+      value: "Pere Borrut",
+    },
+    {
+      label: "Presidente de Estaca",
+      value: "Ferran Silvestre",
+    },
+  ],
 },
 {
   title: "28 de mayo de 2016 — La primera palada",
@@ -330,7 +352,15 @@ Durante la ceremonia se enterró una cápsula del tiempo con:
 • Un Libro de Mormón dedicado por el obispo.
 • Una placa conmemorativa colocada por el presidente de misión, Presidente Dayton.
 `,
-gallery: [
+
+  cards: [
+    {
+      label: "Presidente de Misión",
+      value: "Presidente Dayton",
+    },
+  ],
+
+  gallery: [
   "/images/history/primera-palada-1.jpg",
   "/images/history/primera-palada-2.jpg",
   "/images/history/primera-palada-3.jpg",
@@ -399,15 +429,23 @@ gallery: [
   content: `
 14 de abril de 2019
 
-Obispo:
-• Pere Borrut
-
-Primer consejero:
-• Mario Pinto
-
-Segundo consejero:
-• Jhonatan Suncion Ríos
+La presidencia del obispado quedó formada por:
 `,
+
+  cards: [
+    {
+      label: "Obispo",
+      value: "Pere Borrut",
+    },
+    {
+      label: "Primer consejero",
+      value: "Mario Guillermo Pinto",
+    },
+    {
+      label: "Segundo consejero",
+      value: "Jhonatan Suncion Ríos",
+    },
+  ],
 },
 {
   title: "Una capilla para toda la comunidad",
@@ -434,6 +472,13 @@ El obispo Pere Borrut expresó:
 
 La inauguración simbolizó la fe, el sacrificio y la unidad de generaciones de miembros que contribuyeron a construir no solo un edificio, sino un verdadero hogar espiritual para las familias de Vilafranca.
 `,
+
+  cards: [
+    {
+      label: "Obispo",
+      value: "Pere Borrut",
+    },
+  ],
 },
   ],
 },

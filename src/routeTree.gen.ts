@@ -14,7 +14,7 @@ import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as DocumentosRouteImport } from './routes/documentos'
 import { Route as GaleriaRouteImport } from './routes/galeria'
-import { Route as HistoriaRouteImport } from './routes/historia'
+import { Route as HistoriaRouteRouteImport } from './routes/historia/route'
 import { Route as HistoriasRouteImport } from './routes/historias'
 import { Route as LineaTiempoRouteImport } from './routes/linea-tiempo'
 import { Route as McpRouteImport } from './routes/mcp'
@@ -28,8 +28,11 @@ import { Route as Char91DotmcpChar93ListToolsRouteImport } from './routes/[.mcp]
 import { Route as Char91DotwellKnownChar93OauthProtectedResourceRouteImport } from './routes/[.well-known]/oauth-protected-resource'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as AuthenticatedAportarRouteImport } from './routes/_authenticated/aportar'
+import { Route as HistoriaIndexRouteImport } from './routes/historia/index'
+import { Route as HistoriaBackupRouteImport } from './routes/historia.backup'
 import { Route as DotlovableOauthConsentRouteImport } from './routes/[.]lovable.oauth.consent'
 import { Route as Char91DotmcpChar93InvokeToolToolRouteImport } from './routes/[.mcp]/invoke-tool/$tool'
+import { Route as HistoriaCapituloChapterIdRouteImport } from './routes/historia/capitulo/$chapterId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -55,7 +58,7 @@ const GaleriaRoute = GaleriaRouteImport.update({
   path: '/galeria',
   getParentRoute: () => rootRouteImport,
 } as any)
-const HistoriaRoute = HistoriaRouteImport.update({
+const HistoriaRouteRoute = HistoriaRouteRouteImport.update({
   id: '/historia',
   path: '/historia',
   getParentRoute: () => rootRouteImport,
@@ -127,6 +130,16 @@ const AuthenticatedAportarRoute = AuthenticatedAportarRouteImport.update({
   path: '/aportar',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const HistoriaIndexRoute = HistoriaIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => HistoriaRouteRoute,
+} as any)
+const HistoriaBackupRoute = HistoriaBackupRouteImport.update({
+  id: '/backup',
+  path: '/backup',
+  getParentRoute: () => HistoriaRouteRoute,
+} as any)
 const DotlovableOauthConsentRoute = DotlovableOauthConsentRouteImport.update({
   id: '/.lovable/oauth/consent',
   path: '/.lovable/oauth/consent',
@@ -138,13 +151,19 @@ const Char91DotmcpChar93InvokeToolToolRoute =
     path: '/.mcp/invoke-tool/$tool',
     getParentRoute: () => rootRouteImport,
   } as any)
+const HistoriaCapituloChapterIdRoute =
+  HistoriaCapituloChapterIdRouteImport.update({
+    id: '/capitulo/$chapterId',
+    path: '/capitulo/$chapterId',
+    getParentRoute: () => HistoriaRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/historia': typeof HistoriaRouteRouteWithChildren
   '/auth': typeof AuthRoute
   '/documentos': typeof DocumentosRoute
   '/galeria': typeof GaleriaRoute
-  '/historia': typeof HistoriaRoute
   '/historias': typeof HistoriasRoute
   '/linea-tiempo': typeof LineaTiempoRoute
   '/mcp': typeof McpRoute
@@ -158,15 +177,17 @@ export interface FileRoutesByFullPath {
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/admin': typeof AuthenticatedAdminRoute
   '/aportar': typeof AuthenticatedAportarRoute
+  '/historia/backup': typeof HistoriaBackupRoute
+  '/historia/': typeof HistoriaIndexRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
+  '/historia/capitulo/$chapterId': typeof HistoriaCapituloChapterIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/documentos': typeof DocumentosRoute
   '/galeria': typeof GaleriaRoute
-  '/historia': typeof HistoriaRoute
   '/historias': typeof HistoriasRoute
   '/linea-tiempo': typeof LineaTiempoRoute
   '/mcp': typeof McpRoute
@@ -180,17 +201,20 @@ export interface FileRoutesByTo {
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/admin': typeof AuthenticatedAdminRoute
   '/aportar': typeof AuthenticatedAportarRoute
+  '/historia/backup': typeof HistoriaBackupRoute
+  '/historia': typeof HistoriaIndexRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
+  '/historia/capitulo/$chapterId': typeof HistoriaCapituloChapterIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/historia': typeof HistoriaRouteRouteWithChildren
   '/auth': typeof AuthRoute
   '/documentos': typeof DocumentosRoute
   '/galeria': typeof GaleriaRoute
-  '/historia': typeof HistoriaRoute
   '/historias': typeof HistoriasRoute
   '/linea-tiempo': typeof LineaTiempoRoute
   '/mcp': typeof McpRoute
@@ -204,17 +228,20 @@ export interface FileRoutesById {
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRoute
   '/_authenticated/aportar': typeof AuthenticatedAportarRoute
+  '/historia/backup': typeof HistoriaBackupRoute
+  '/historia/': typeof HistoriaIndexRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
+  '/historia/capitulo/$chapterId': typeof HistoriaCapituloChapterIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/historia'
     | '/auth'
     | '/documentos'
     | '/galeria'
-    | '/historia'
     | '/historias'
     | '/linea-tiempo'
     | '/mcp'
@@ -228,15 +255,17 @@ export interface FileRouteTypes {
     | '/.well-known/oauth-protected-resource'
     | '/admin'
     | '/aportar'
+    | '/historia/backup'
+    | '/historia/'
     | '/.lovable/oauth/consent'
     | '/.mcp/invoke-tool/$tool'
+    | '/historia/capitulo/$chapterId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/auth'
     | '/documentos'
     | '/galeria'
-    | '/historia'
     | '/historias'
     | '/linea-tiempo'
     | '/mcp'
@@ -250,16 +279,19 @@ export interface FileRouteTypes {
     | '/.well-known/oauth-protected-resource'
     | '/admin'
     | '/aportar'
+    | '/historia/backup'
+    | '/historia'
     | '/.lovable/oauth/consent'
     | '/.mcp/invoke-tool/$tool'
+    | '/historia/capitulo/$chapterId'
   id:
     | '__root__'
     | '/'
     | '/_authenticated'
+    | '/historia'
     | '/auth'
     | '/documentos'
     | '/galeria'
-    | '/historia'
     | '/historias'
     | '/linea-tiempo'
     | '/mcp'
@@ -273,17 +305,20 @@ export interface FileRouteTypes {
     | '/.well-known/oauth-protected-resource'
     | '/_authenticated/admin'
     | '/_authenticated/aportar'
+    | '/historia/backup'
+    | '/historia/'
     | '/.lovable/oauth/consent'
     | '/.mcp/invoke-tool/$tool'
+    | '/historia/capitulo/$chapterId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  HistoriaRouteRoute: typeof HistoriaRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
   DocumentosRoute: typeof DocumentosRoute
   GaleriaRoute: typeof GaleriaRoute
-  HistoriaRoute: typeof HistoriaRoute
   HistoriasRoute: typeof HistoriasRoute
   LineaTiempoRoute: typeof LineaTiempoRoute
   McpRoute: typeof McpRoute
@@ -340,7 +375,7 @@ declare module '@tanstack/react-router' {
       id: '/historia'
       path: '/historia'
       fullPath: '/historia'
-      preLoaderRoute: typeof HistoriaRouteImport
+      preLoaderRoute: typeof HistoriaRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/historias': {
@@ -434,6 +469,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAportarRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/historia/': {
+      id: '/historia/'
+      path: '/'
+      fullPath: '/historia/'
+      preLoaderRoute: typeof HistoriaIndexRouteImport
+      parentRoute: typeof HistoriaRouteRoute
+    }
+    '/historia/backup': {
+      id: '/historia/backup'
+      path: '/backup'
+      fullPath: '/historia/backup'
+      preLoaderRoute: typeof HistoriaBackupRouteImport
+      parentRoute: typeof HistoriaRouteRoute
+    }
     '/.lovable/oauth/consent': {
       id: '/.lovable/oauth/consent'
       path: '/.lovable/oauth/consent'
@@ -447,6 +496,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/.mcp/invoke-tool/$tool'
       preLoaderRoute: typeof Char91DotmcpChar93InvokeToolToolRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/historia/capitulo/$chapterId': {
+      id: '/historia/capitulo/$chapterId'
+      path: '/capitulo/$chapterId'
+      fullPath: '/historia/capitulo/$chapterId'
+      preLoaderRoute: typeof HistoriaCapituloChapterIdRouteImport
+      parentRoute: typeof HistoriaRouteRoute
     }
   }
 }
@@ -464,13 +520,29 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
 const AuthenticatedRouteRouteWithChildren =
   AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
 
+interface HistoriaRouteRouteChildren {
+  HistoriaBackupRoute: typeof HistoriaBackupRoute
+  HistoriaIndexRoute: typeof HistoriaIndexRoute
+  HistoriaCapituloChapterIdRoute: typeof HistoriaCapituloChapterIdRoute
+}
+
+const HistoriaRouteRouteChildren: HistoriaRouteRouteChildren = {
+  HistoriaBackupRoute: HistoriaBackupRoute,
+  HistoriaIndexRoute: HistoriaIndexRoute,
+  HistoriaCapituloChapterIdRoute: HistoriaCapituloChapterIdRoute,
+}
+
+const HistoriaRouteRouteWithChildren = HistoriaRouteRoute._addFileChildren(
+  HistoriaRouteRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  HistoriaRouteRoute: HistoriaRouteRouteWithChildren,
   AuthRoute: AuthRoute,
   DocumentosRoute: DocumentosRoute,
   GaleriaRoute: GaleriaRoute,
-  HistoriaRoute: HistoriaRoute,
   HistoriasRoute: HistoriasRoute,
   LineaTiempoRoute: LineaTiempoRoute,
   McpRoute: McpRoute,

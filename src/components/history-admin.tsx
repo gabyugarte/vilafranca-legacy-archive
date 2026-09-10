@@ -43,8 +43,46 @@ async function remove(id: string) {
     return;
   }
 
+  const { data: remainingChapters, error: fetchError } = await supabase
+    .from("history_chapters")
+    .select("id")
+    .order("order_index", { ascending: true });
+
+  if (fetchError) {
+    alert(fetchError.message);
+    return;
+  }
+
+  for (let index = 0; index < (remainingChapters?.length ?? 0); index++) {
+    const { error: updateError } = await supabase
+      .from("history_chapters")
+      .update({ order_index: -(index + 1) })
+      .eq("id", remainingChapters[index].id);
+
+    if (updateError) {
+      alert(updateError.message);
+      return;
+    }
+  }
+
+  for (let index = 0; index < (remainingChapters?.length ?? 0); index++) {
+    const { error: updateError } = await supabase
+      .from("history_chapters")
+      .update({ order_index: index + 1 })
+      .eq("id", remainingChapters[index].id);
+
+    if (updateError) {
+      alert(updateError.message);
+      return;
+    }
+  }
+
   await qc.invalidateQueries({
     queryKey: ["admin", "history"],
+  });
+
+  await qc.invalidateQueries({
+    queryKey: ["history"],
   });
 }
 
