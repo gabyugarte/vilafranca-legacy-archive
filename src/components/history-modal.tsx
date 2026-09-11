@@ -91,7 +91,15 @@ return (
 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
 
   <div className="w-full max-w-4xl max-h-[90vh] overflow-y-auto rounded-2xl bg-background p-6 space-y-6">
-
+  <button
+    type="button"
+    onClick={onClose}
+    aria-label="Cerrar"
+    title="Cerrar"
+    className="sticky top-0 ml-auto z-50 flex h-9 w-9 items-center justify-center rounded-full bg-background text-xl text-muted-foreground shadow-sm transition-colors hover:bg-muted hover:text-foreground"
+  >
+    ×
+  </button>
       <form
         onSubmit={save}
         className="space-y-4"

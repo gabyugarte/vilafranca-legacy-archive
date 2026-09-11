@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useSuspenseQuery } from "@tanstack/react-query";
+import { useState } from "react";
 import { PageHeader } from "@/components/page-header";
 import { Gallery } from "@/components/gallery";
 import { bishopsQuery } from "@/lib/queries.functions";
@@ -42,7 +43,9 @@ function bishopPhoto(name: string) {
 }
 function BishopsPage() {
   const { data: bishops } = useSuspenseQuery(bishopsQuery);
-console.log(bishops);
+
+  const [openHistory, setOpenHistory] = useState<string | null>(null);
+
   return (
     <>
       <PageHeader
@@ -109,33 +112,149 @@ console.log(bishops);
           </p>
         )}
 
-        {(b.counselor_1 || b.counselor_2) && (
-          <div className="mt-8 grid gap-4 sm:grid-cols-2">
+{b.bishop_counselor_periods?.length > 0 ? (
+  (() => {
+    const periods = [...b.bishop_counselor_periods].sort(
+      (a, z) => (a.order_index ?? 0) - (z.order_index ?? 0)
+    );
 
-            {b.counselor_1 && (
-              <div className="rounded-xl border border-primary/15 bg-primary/5 p-4">
-                <div className="text-xs uppercase tracking-widest text-muted-foreground">
-                  Primer consejero
-                </div>
-                <div className="mt-1 font-medium">
-                  {b.counselor_1}
-                </div>
+    const currentPeriod =
+      periods.find((period) => !period.end_date) ??
+      periods[periods.length - 1];
+
+    return (
+      <div className="mt-8 space-y-4">
+        <h3 className="text-sm font-semibold uppercase tracking-widest text-muted-foreground">
+          Consejeros actuales
+        </h3>
+
+        <div className="grid gap-4 sm:grid-cols-2">
+          {currentPeriod.counselor_1 && (
+            <div className="rounded-xl border border-primary/15 bg-primary/5 p-4">
+              <div className="text-xs uppercase tracking-widest text-muted-foreground">
+                Primer consejero
               </div>
-            )}
 
-            {b.counselor_2 && (
-              <div className="rounded-xl border border-primary/15 bg-primary/5 p-4">
-                <div className="text-xs uppercase tracking-widest text-muted-foreground">
-                  Segundo consejero
-                </div>
-                <div className="mt-1 font-medium">
-                  {b.counselor_2}
-                </div>
+              <div className="mt-1 font-medium">
+                {currentPeriod.counselor_1}
               </div>
-            )}
+            </div>
+          )}
 
+          {currentPeriod.counselor_2 && (
+            <div className="rounded-xl border border-primary/15 bg-primary/5 p-4">
+              <div className="text-xs uppercase tracking-widest text-muted-foreground">
+                Segundo consejero
+              </div>
+
+              <div className="mt-1 font-medium">
+                {currentPeriod.counselor_2}
+              </div>
+            </div>
+          )}
+        </div>
+
+{periods.length > 1 && (
+  <div className="space-y-4">
+    <button
+      type="button"
+      onClick={() =>
+        setOpenHistory(
+          openHistory === b.id ? null : b.id
+        )
+      }
+      className="text-sm font-medium text-primary transition-colors hover:underline"
+    >
+      {openHistory === b.id
+        ? "Ocultar historial ↑"
+        : "Ver historial de consejeros →"}
+    </button>
+
+    {openHistory === b.id && (
+      <div className="space-y-3 rounded-xl border border-border bg-muted/20 p-5">
+        <h4 className="text-sm font-semibold uppercase tracking-widest text-muted-foreground">
+          Historial de consejeros
+        </h4>
+
+{periods
+  .filter((period) => period.id !== currentPeriod.id)
+  .map((period) => (
+              <div
+            key={period.id}
+            className="rounded-xl border border-primary/10 bg-background p-4"
+          >
+            <div className="font-semibold text-foreground">
+              Periodo {period.order_index}
+            </div>
+
+            <div className="mt-1 text-sm text-muted-foreground">
+              {fmt(period.start_date, "—")} —{" "}
+              {fmt(period.end_date, "Actualidad")}
+            </div>
+
+            <div className="mt-4 grid gap-3 sm:grid-cols-2">
+              {period.counselor_1 && (
+                <div>
+                  <div className="text-xs uppercase tracking-widest text-muted-foreground">
+                    Primer consejero
+                  </div>
+
+                  <div className="mt-1 font-medium">
+                    {period.counselor_1}
+                  </div>
+                </div>
+              )}
+
+              {period.counselor_2 && (
+                <div>
+                  <div className="text-xs uppercase tracking-widest text-muted-foreground">
+                    Segundo consejero
+                  </div>
+
+                  <div className="mt-1 font-medium">
+                    {period.counselor_2}
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
-        )}
+        ))}
+      </div>
+    )}
+  </div>
+)}
+      </div>
+    );
+  })()
+) : (
+  (b.counselor_1 || b.counselor_2) && (
+    <div className="mt-8 grid gap-4 sm:grid-cols-2">
+      {b.counselor_1 && (
+        <div className="rounded-xl border border-primary/15 bg-primary/5 p-4">
+          <div className="text-xs uppercase tracking-widest text-muted-foreground">
+            Primer consejero
+          </div>
+
+          <div className="mt-1 font-medium">
+            {b.counselor_1}
+          </div>
+        </div>
+      )}
+
+      {b.counselor_2 && (
+        <div className="rounded-xl border border-primary/15 bg-primary/5 p-4">
+          <div className="text-xs uppercase tracking-widest text-muted-foreground">
+            Segundo consejero
+          </div>
+
+          <div className="mt-1 font-medium">
+            {b.counselor_2}
+          </div>
+        </div>
+      )}
+    </div>
+  )
+)}
 
       </div>
 

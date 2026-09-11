@@ -50,6 +50,46 @@ export type Database = {
         }
         Relationships: []
       }
+
+      bishop_counselor_periods: {
+        Row: {
+          id: string
+          bishop_id: string
+          start_date: string
+          end_date: string | null
+          counselor_1: string | null
+          counselor_2: string | null
+          order_index: number
+        }
+        Insert: {
+          id?: string
+          bishop_id: string
+          start_date: string
+          end_date?: string | null
+          counselor_1?: string | null
+          counselor_2?: string | null
+          order_index?: number
+        }
+        Update: {
+          id?: string
+          bishop_id?: string
+          start_date?: string
+          end_date?: string | null
+          counselor_1?: string | null
+          counselor_2?: string | null
+          order_index?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "bishop_counselor_periods_bishop_id_fkey"
+            columns: ["bishop_id"]
+            isOneToOne: false
+            referencedRelation: "bishops"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+
       history_chapters: {
   Row: {
     id: string
