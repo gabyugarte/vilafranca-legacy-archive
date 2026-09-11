@@ -49,7 +49,57 @@ export function SiteFooter() {
     © {new Date().getFullYear()} Barrio Vilafranca. Todos los recuerdos
     pertenecen a sus miembros.
   </p>
+<div className="mt-4 flex items-center justify-end gap-4">
+    <span className="text-sm text-muted-foreground">
+    Síguenos en nuestras redes
+  </span>
 
+  <div className="flex items-center gap-3">
+    <a
+      href="https://www.instagram.com/barriovilafrancasud/"
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label="Instagram del Barrio Vilafranca"
+      title="Instagram del Barrio Vilafranca"
+      className="flex h-10 w-10 items-center justify-center rounded-full text-muted-foreground transition-all duration-200 hover:scale-110 hover:bg-primary/10 hover:text-primary"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        className="h-5 w-5"
+        aria-hidden="true"
+      >
+        <rect width="20" height="20" x="2" y="2" rx="5" />
+        <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+        <line x1="17.5" x2="17.51" y1="6.5" y2="6.5" />
+      </svg>
+    </a>
+
+    <a
+      href="https://www.facebook.com/profile.php?id=61587525950635&locale=es_ES"
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label="Facebook del Barrio Vilafranca"
+      title="Facebook del Barrio Vilafranca"
+      className="flex h-10 w-10 items-center justify-center rounded-full text-muted-foreground transition-all duration-200 hover:scale-110 hover:bg-primary/10 hover:text-primary"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="currentColor"
+        className="h-5 w-5"
+        aria-hidden="true"
+      >
+        <path d="M14 8h3V4h-3c-2.76 0-5 2.24-5 5v2H6v4h3v5h4v-5h3l1-4h-4V9c0-.55.45-1 1-1z" />
+      </svg>
+    </a>
+  </div>
+</div>
   <p className="mt-2 text-xs">
     Sitio web desarrollado por{" "}
     <a

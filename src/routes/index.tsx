@@ -158,7 +158,63 @@ function Home() {
           el Evangelio.
         </p>
       </section>
+{/* Redes sociales */}
+<section className="mx-auto max-w-4xl px-4 pb-16 text-center sm:px-6">
+  <div className="text-xs uppercase tracking-[0.25em] text-primary">
+    Síguenos en nuestras redes
+  </div>
 
+  <p className="mt-3 text-sm text-muted-foreground">
+    Mantente al día con la vida del Barrio Vilafranca.
+  </p>
+
+  <div className="mt-5 flex items-center justify-center gap-4">
+    <a
+      href="https://www.instagram.com/barriovilafrancasud/"
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label="Instagram del Barrio Vilafranca"
+      title="Instagram del Barrio Vilafranca"
+      className="flex h-10 w-10 items-center justify-center rounded-full text-muted-foreground transition-all duration-200 hover:scale-110 hover:bg-primary/10 hover:text-primary"
+    >
+      <svg
+    
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        className="h-6 w-6"
+        aria-hidden="true"
+      >
+        <rect width="20" height="20" x="2" y="2" rx="5" />
+        <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+        <line x1="17.5" x2="17.51" y1="6.5" y2="6.5" />
+      </svg>
+    </a>
+
+    <a
+      href="https://www.facebook.com/profile.php?id=61587525950635&locale=es_ES"
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label="Facebook del Barrio Vilafranca"
+      title="Facebook del Barrio Vilafranca"
+      className="flex h-10 w-10 items-center justify-center rounded-full text-muted-foreground transition-all duration-200 hover:scale-110 hover:bg-primary/10 hover:text-primary"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="currentColor"
+        className="h-6 w-6"
+        aria-hidden="true"
+      >
+        <path d="M14 8h3V4h-3c-2.76 0-5 2.24-5 5v2H6v4h3v5h4v-5h3l1-4h-4V9c0-.55.45-1 1-1z" />
+      </svg>
+    </a>
+  </div>
+</section>
       {/* Sections grid */}
       <section className="mx-auto max-w-7xl px-4 pb-20 sm:px-6 lg:px-8">
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
