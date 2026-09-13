@@ -46,6 +46,18 @@ function BishopsPage() {
 
   const [openHistory, setOpenHistory] = useState<string | null>(null);
 
+const currentBishopId =
+  [...bishops]
+    .filter(
+      (bishop): bishop is typeof bishop & { start_date: string } =>
+        Boolean(bishop.start_date)
+    )
+    .sort(
+      (a, b) =>
+        new Date(b.start_date).getTime() -
+        new Date(a.start_date).getTime()
+    )[0]?.id;
+
   return (
     <>
       <PageHeader
@@ -124,8 +136,8 @@ function BishopsPage() {
 
     return (
       <div className="mt-8 space-y-4">
-        <h3 className="text-sm font-semibold uppercase tracking-widest text-muted-foreground">
-          Consejeros actuales
+       <h3 className="text-sm font-semibold uppercase tracking-widest text-muted-foreground">
+          {b.id === currentBishopId ? "Consejeros actuales" : "Consejeros"}
         </h3>
 
         <div className="grid gap-4 sm:grid-cols-2">

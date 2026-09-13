@@ -162,10 +162,9 @@ if (block.type === "gallery") {
         </p>
       )}
 
-      <HistoryGallery
-        images={images}
-        title={block.caption ?? "Galería histórica"}
-      />
+  <HistoryGallery
+  images={images}
+/>
     </section>
   );
 }

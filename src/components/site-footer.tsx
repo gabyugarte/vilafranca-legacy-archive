@@ -49,8 +49,8 @@ export function SiteFooter() {
     © {new Date().getFullYear()} Barrio Vilafranca. Todos los recuerdos
     pertenecen a sus miembros.
   </p>
-<div className="mt-4 flex items-center justify-end gap-4">
-    <span className="text-sm text-muted-foreground">
+<div className="mt-4 flex w-full items-center justify-center gap-4 lg:justify-end">
+  <span className="text-sm text-muted-foreground">
     Síguenos en nuestras redes
   </span>
 
@@ -100,7 +100,7 @@ export function SiteFooter() {
     </a>
   </div>
 </div>
-  <p className="mt-2 text-xs">
+  <p className="mt-2 w-full text-center text-xs lg:text-right">
     Sitio web desarrollado por{" "}
     <a
       href="https://gabyugarte.github.io/"
