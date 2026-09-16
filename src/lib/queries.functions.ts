@@ -45,10 +45,10 @@ const { data, error } = await supabase
 
 export const fetchOrganizations = createServerFn({ method: "GET" }).handler(async () => {
   const supabase = serverClient();
-  const { data, error } = await supabase
-    .from("organizations")
-    .select("*")
-    .order("order_index", { ascending: true });
+const { data, error } = await supabase
+  .from("organizations")
+  .select("*")
+  .order("order_index", { ascending: true });
   if (error) throw new Error(error.message);
   return data ?? [];
 });
@@ -143,6 +143,65 @@ export const organizationsQuery = queryOptions({
   queryKey: ["organizations"],
   queryFn: () => fetchOrganizations(),
 });
+export const fetchOrganizationBySlug = createServerFn({ method: "GET" })
+  .inputValidator((slug: string) => slug)
+  .handler(async ({ data: slug }) => {
+    const supabase = serverClient();
+
+    const { data, error } = await supabase
+      .from("organizations")
+      .select("*")
+      .eq("slug", slug)
+      .maybeSingle();
+
+    if (error) throw new Error(error.message);
+
+    return data;
+  });
+  export const organizationQuery = (slug: string) =>
+  queryOptions({
+    queryKey: ["organization", slug],
+    queryFn: () => fetchOrganizationBySlug({ data: slug }),
+  });
+export const fetchOrganizationGallery = createServerFn({ method: "GET" })
+  .inputValidator((organizationId: string) => organizationId)
+  .handler(async ({ data: organizationId }) => {
+    const supabase = serverClient();
+
+    const { data, error } = await supabase
+      .from("gallery_photo_organizations")
+      .select(`
+        gallery_photos (*)
+      `)
+      .eq("organization_id", organizationId);
+
+    if (error) throw new Error(error.message);
+
+    return (
+      data
+        ?.map((item) => item.gallery_photos)
+        .filter(
+          (photo): photo is NonNullable<typeof photo> =>
+            photo !== null &&
+            photo.status === "approved",
+        )
+        .sort((a, b) => {
+          if (!a.photo_date) return 1;
+          if (!b.photo_date) return -1;
+
+          return (
+            new Date(b.photo_date).getTime() -
+            new Date(a.photo_date).getTime()
+          );
+        }) ?? []
+    );
+  });
+
+export const organizationGalleryQuery = (organizationId: string) =>
+  queryOptions({
+    queryKey: ["organization-gallery", organizationId],
+    queryFn: () => fetchOrganizationGallery({ data: organizationId }),
+  });
 export const branchPresidentsQuery = queryOptions({
   queryKey: ["branch-presidents"],
   queryFn: () => fetchBranchPresidents(),

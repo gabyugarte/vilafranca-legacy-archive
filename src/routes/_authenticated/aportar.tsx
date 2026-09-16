@@ -33,7 +33,7 @@ function ContributePage() {
   const [kind, setKind] = useState<Kind>("foto");
 
   useEffect(() => {
-    if (!loading && !session) navigate({ to: "/auth" });
+    if (!loading && !session) navigate({ to: "/auth", search: { next: "" } });
   }, [loading, session, navigate]);
 
   async function signOut() {
@@ -151,7 +151,8 @@ function FileUploader({
     setErr(null);
     try {
       const ext = file.name.split(".").pop() || "bin";
-      const path = `submissions/${userId}/${crypto.randomUUID()}.${ext}`;
+      const uniqueId = `${Date.now()}-${Math.random().toString(36).slice(2, 10)}`;
+      const path = `submissions/${userId}/${uniqueId}.${ext}`;
       const { error: upErr } = await supabase.storage.from("media").upload(path, file, {
         cacheControl: "3600",
         upsert: false,

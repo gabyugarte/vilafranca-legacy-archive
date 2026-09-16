@@ -90,6 +90,48 @@ export type Database = {
         ]
       }
 
+      organization_leadership_periods: {
+  Row: {
+    id: string
+    organization_id: string
+    start_date: string
+    end_date: string | null
+    leader: string | null
+    counselor_1: string | null
+    counselor_2: string | null
+    order_index: number
+  }
+  Insert: {
+    id?: string
+    organization_id: string
+    start_date: string
+    end_date?: string | null
+    leader?: string | null
+    counselor_1?: string | null
+    counselor_2?: string | null
+    order_index?: number
+  }
+  Update: {
+    id?: string
+    organization_id?: string
+    start_date?: string
+    end_date?: string | null
+    leader?: string | null
+    counselor_1?: string | null
+    counselor_2?: string | null
+    order_index?: number
+  }
+  Relationships: [
+    {
+      foreignKeyName: "organization_leadership_periods_organization_id_fkey"
+      columns: ["organization_id"]
+      isOneToOne: false
+      referencedRelation: "organizations"
+      referencedColumns: ["id"]
+    }
+  ]
+}
+
       history_chapters: {
   Row: {
     id: string
@@ -307,6 +349,7 @@ history_blocks: {
           created_at: string
           id: string
           image_url: string
+          organization_id: string | null
           photo_date: string | null
           status: Database["public"]["Enums"]["content_status"]
           submitted_by: string | null
@@ -319,6 +362,7 @@ history_blocks: {
           created_at?: string
           id?: string
           image_url: string
+          organization_id?: string | null
           photo_date?: string | null
           status?: Database["public"]["Enums"]["content_status"]
           submitted_by?: string | null
@@ -331,6 +375,7 @@ history_blocks: {
           created_at?: string
           id?: string
           image_url?: string
+          organization_id?: string | null
           photo_date?: string | null
           status?: Database["public"]["Enums"]["content_status"]
           submitted_by?: string | null
@@ -339,6 +384,42 @@ history_blocks: {
         }
         Relationships: []
       }
+      gallery_photo_organizations: {
+  Row: {
+    id: string
+    photo_id: string
+    organization_id: string
+    created_at: string
+  }
+  Insert: {
+    id?: string
+    photo_id: string
+    organization_id: string
+    created_at?: string
+  }
+  Update: {
+    id?: string
+    photo_id?: string
+    organization_id?: string
+    created_at?: string
+  }
+  Relationships: [
+    {
+      foreignKeyName: "gallery_photo_organizations_photo_id_fkey"
+      columns: ["photo_id"]
+      isOneToOne: false
+      referencedRelation: "gallery_photos"
+      referencedColumns: ["id"]
+    },
+    {
+      foreignKeyName: "gallery_photo_organizations_organization_id_fkey"
+      columns: ["organization_id"]
+      isOneToOne: false
+      referencedRelation: "organizations"
+      referencedColumns: ["id"]
+    }
+  ]
+}
       historical_documents: {
         Row: {
           created_at: string
@@ -346,6 +427,7 @@ history_blocks: {
           document_date: string | null
           document_url: string | null
           id: string
+          organization_id: string | null
           status: Database["public"]["Enums"]["content_status"]
           submitted_by: string | null
           thumbnail_url: string | null
@@ -358,6 +440,7 @@ history_blocks: {
           document_date?: string | null
           document_url?: string | null
           id?: string
+          organization_id?: string | null
           status?: Database["public"]["Enums"]["content_status"]
           submitted_by?: string | null
           thumbnail_url?: string | null
@@ -370,6 +453,7 @@ history_blocks: {
           document_date?: string | null
           document_url?: string | null
           id?: string
+          organization_id?: string | null
           status?: Database["public"]["Enums"]["content_status"]
           submitted_by?: string | null
           thumbnail_url?: string | null

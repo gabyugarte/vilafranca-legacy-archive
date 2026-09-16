@@ -20,7 +20,7 @@ import { Route as LineaTiempoRouteImport } from './routes/linea-tiempo'
 import { Route as McpRouteImport } from './routes/mcp'
 import { Route as NuevasActividadesRouteImport } from './routes/nuevas-actividades'
 import { Route as ObisposRouteImport } from './routes/obispos'
-import { Route as OrganizacionesRouteImport } from './routes/organizaciones'
+import { Route as OrganizacionesRouteRouteImport } from './routes/organizaciones/route'
 import { Route as PionerosRouteImport } from './routes/pioneros'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as VideosRouteImport } from './routes/videos'
@@ -30,6 +30,8 @@ import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/
 import { Route as AuthenticatedAportarRouteImport } from './routes/_authenticated/aportar'
 import { Route as HistoriaIndexRouteImport } from './routes/historia/index'
 import { Route as HistoriaBackupRouteImport } from './routes/historia.backup'
+import { Route as OrganizacionesIndexRouteImport } from './routes/organizaciones/index'
+import { Route as OrganizacionesSlugRouteImport } from './routes/organizaciones/$slug'
 import { Route as DotlovableOauthConsentRouteImport } from './routes/[.]lovable.oauth.consent'
 import { Route as Char91DotmcpChar93InvokeToolToolRouteImport } from './routes/[.mcp]/invoke-tool/$tool'
 import { Route as HistoriaCapituloChapterIdRouteImport } from './routes/historia/capitulo/$chapterId'
@@ -88,7 +90,7 @@ const ObisposRoute = ObisposRouteImport.update({
   path: '/obispos',
   getParentRoute: () => rootRouteImport,
 } as any)
-const OrganizacionesRoute = OrganizacionesRouteImport.update({
+const OrganizacionesRouteRoute = OrganizacionesRouteRouteImport.update({
   id: '/organizaciones',
   path: '/organizaciones',
   getParentRoute: () => rootRouteImport,
@@ -140,6 +142,16 @@ const HistoriaBackupRoute = HistoriaBackupRouteImport.update({
   path: '/backup',
   getParentRoute: () => HistoriaRouteRoute,
 } as any)
+const OrganizacionesIndexRoute = OrganizacionesIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => OrganizacionesRouteRoute,
+} as any)
+const OrganizacionesSlugRoute = OrganizacionesSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => OrganizacionesRouteRoute,
+} as any)
 const DotlovableOauthConsentRoute = DotlovableOauthConsentRouteImport.update({
   id: '/.lovable/oauth/consent',
   path: '/.lovable/oauth/consent',
@@ -161,6 +173,7 @@ const HistoriaCapituloChapterIdRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/historia': typeof HistoriaRouteRouteWithChildren
+  '/organizaciones': typeof OrganizacionesRouteRouteWithChildren
   '/auth': typeof AuthRoute
   '/documentos': typeof DocumentosRoute
   '/galeria': typeof GaleriaRoute
@@ -169,7 +182,6 @@ export interface FileRoutesByFullPath {
   '/mcp': typeof McpRoute
   '/nuevas-actividades': typeof NuevasActividadesRoute
   '/obispos': typeof ObisposRoute
-  '/organizaciones': typeof OrganizacionesRoute
   '/pioneros': typeof PionerosRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/videos': typeof VideosRoute
@@ -178,7 +190,9 @@ export interface FileRoutesByFullPath {
   '/admin': typeof AuthenticatedAdminRoute
   '/aportar': typeof AuthenticatedAportarRoute
   '/historia/backup': typeof HistoriaBackupRoute
+  '/organizaciones/$slug': typeof OrganizacionesSlugRoute
   '/historia/': typeof HistoriaIndexRoute
+  '/organizaciones/': typeof OrganizacionesIndexRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
   '/historia/capitulo/$chapterId': typeof HistoriaCapituloChapterIdRoute
@@ -193,7 +207,6 @@ export interface FileRoutesByTo {
   '/mcp': typeof McpRoute
   '/nuevas-actividades': typeof NuevasActividadesRoute
   '/obispos': typeof ObisposRoute
-  '/organizaciones': typeof OrganizacionesRoute
   '/pioneros': typeof PionerosRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/videos': typeof VideosRoute
@@ -202,7 +215,9 @@ export interface FileRoutesByTo {
   '/admin': typeof AuthenticatedAdminRoute
   '/aportar': typeof AuthenticatedAportarRoute
   '/historia/backup': typeof HistoriaBackupRoute
+  '/organizaciones/$slug': typeof OrganizacionesSlugRoute
   '/historia': typeof HistoriaIndexRoute
+  '/organizaciones': typeof OrganizacionesIndexRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
   '/historia/capitulo/$chapterId': typeof HistoriaCapituloChapterIdRoute
@@ -212,6 +227,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/historia': typeof HistoriaRouteRouteWithChildren
+  '/organizaciones': typeof OrganizacionesRouteRouteWithChildren
   '/auth': typeof AuthRoute
   '/documentos': typeof DocumentosRoute
   '/galeria': typeof GaleriaRoute
@@ -220,7 +236,6 @@ export interface FileRoutesById {
   '/mcp': typeof McpRoute
   '/nuevas-actividades': typeof NuevasActividadesRoute
   '/obispos': typeof ObisposRoute
-  '/organizaciones': typeof OrganizacionesRoute
   '/pioneros': typeof PionerosRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/videos': typeof VideosRoute
@@ -229,7 +244,9 @@ export interface FileRoutesById {
   '/_authenticated/admin': typeof AuthenticatedAdminRoute
   '/_authenticated/aportar': typeof AuthenticatedAportarRoute
   '/historia/backup': typeof HistoriaBackupRoute
+  '/organizaciones/$slug': typeof OrganizacionesSlugRoute
   '/historia/': typeof HistoriaIndexRoute
+  '/organizaciones/': typeof OrganizacionesIndexRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
   '/historia/capitulo/$chapterId': typeof HistoriaCapituloChapterIdRoute
@@ -239,6 +256,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/historia'
+    | '/organizaciones'
     | '/auth'
     | '/documentos'
     | '/galeria'
@@ -247,7 +265,6 @@ export interface FileRouteTypes {
     | '/mcp'
     | '/nuevas-actividades'
     | '/obispos'
-    | '/organizaciones'
     | '/pioneros'
     | '/sitemap.xml'
     | '/videos'
@@ -256,7 +273,9 @@ export interface FileRouteTypes {
     | '/admin'
     | '/aportar'
     | '/historia/backup'
+    | '/organizaciones/$slug'
     | '/historia/'
+    | '/organizaciones/'
     | '/.lovable/oauth/consent'
     | '/.mcp/invoke-tool/$tool'
     | '/historia/capitulo/$chapterId'
@@ -271,7 +290,6 @@ export interface FileRouteTypes {
     | '/mcp'
     | '/nuevas-actividades'
     | '/obispos'
-    | '/organizaciones'
     | '/pioneros'
     | '/sitemap.xml'
     | '/videos'
@@ -280,7 +298,9 @@ export interface FileRouteTypes {
     | '/admin'
     | '/aportar'
     | '/historia/backup'
+    | '/organizaciones/$slug'
     | '/historia'
+    | '/organizaciones'
     | '/.lovable/oauth/consent'
     | '/.mcp/invoke-tool/$tool'
     | '/historia/capitulo/$chapterId'
@@ -289,6 +309,7 @@ export interface FileRouteTypes {
     | '/'
     | '/_authenticated'
     | '/historia'
+    | '/organizaciones'
     | '/auth'
     | '/documentos'
     | '/galeria'
@@ -297,7 +318,6 @@ export interface FileRouteTypes {
     | '/mcp'
     | '/nuevas-actividades'
     | '/obispos'
-    | '/organizaciones'
     | '/pioneros'
     | '/sitemap.xml'
     | '/videos'
@@ -306,7 +326,9 @@ export interface FileRouteTypes {
     | '/_authenticated/admin'
     | '/_authenticated/aportar'
     | '/historia/backup'
+    | '/organizaciones/$slug'
     | '/historia/'
+    | '/organizaciones/'
     | '/.lovable/oauth/consent'
     | '/.mcp/invoke-tool/$tool'
     | '/historia/capitulo/$chapterId'
@@ -316,6 +338,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   HistoriaRouteRoute: typeof HistoriaRouteRouteWithChildren
+  OrganizacionesRouteRoute: typeof OrganizacionesRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
   DocumentosRoute: typeof DocumentosRoute
   GaleriaRoute: typeof GaleriaRoute
@@ -324,7 +347,6 @@ export interface RootRouteChildren {
   McpRoute: typeof McpRoute
   NuevasActividadesRoute: typeof NuevasActividadesRoute
   ObisposRoute: typeof ObisposRoute
-  OrganizacionesRoute: typeof OrganizacionesRoute
   PionerosRoute: typeof PionerosRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   VideosRoute: typeof VideosRoute
@@ -417,7 +439,7 @@ declare module '@tanstack/react-router' {
       id: '/organizaciones'
       path: '/organizaciones'
       fullPath: '/organizaciones'
-      preLoaderRoute: typeof OrganizacionesRouteImport
+      preLoaderRoute: typeof OrganizacionesRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/pioneros': {
@@ -483,6 +505,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof HistoriaBackupRouteImport
       parentRoute: typeof HistoriaRouteRoute
     }
+    '/organizaciones/': {
+      id: '/organizaciones/'
+      path: '/'
+      fullPath: '/organizaciones/'
+      preLoaderRoute: typeof OrganizacionesIndexRouteImport
+      parentRoute: typeof OrganizacionesRouteRoute
+    }
+    '/organizaciones/$slug': {
+      id: '/organizaciones/$slug'
+      path: '/$slug'
+      fullPath: '/organizaciones/$slug'
+      preLoaderRoute: typeof OrganizacionesSlugRouteImport
+      parentRoute: typeof OrganizacionesRouteRoute
+    }
     '/.lovable/oauth/consent': {
       id: '/.lovable/oauth/consent'
       path: '/.lovable/oauth/consent'
@@ -536,10 +572,24 @@ const HistoriaRouteRouteWithChildren = HistoriaRouteRoute._addFileChildren(
   HistoriaRouteRouteChildren,
 )
 
+interface OrganizacionesRouteRouteChildren {
+  OrganizacionesSlugRoute: typeof OrganizacionesSlugRoute
+  OrganizacionesIndexRoute: typeof OrganizacionesIndexRoute
+}
+
+const OrganizacionesRouteRouteChildren: OrganizacionesRouteRouteChildren = {
+  OrganizacionesSlugRoute: OrganizacionesSlugRoute,
+  OrganizacionesIndexRoute: OrganizacionesIndexRoute,
+}
+
+const OrganizacionesRouteRouteWithChildren =
+  OrganizacionesRouteRoute._addFileChildren(OrganizacionesRouteRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   HistoriaRouteRoute: HistoriaRouteRouteWithChildren,
+  OrganizacionesRouteRoute: OrganizacionesRouteRouteWithChildren,
   AuthRoute: AuthRoute,
   DocumentosRoute: DocumentosRoute,
   GaleriaRoute: GaleriaRoute,
@@ -548,7 +598,6 @@ const rootRouteChildren: RootRouteChildren = {
   McpRoute: McpRoute,
   NuevasActividadesRoute: NuevasActividadesRoute,
   ObisposRoute: ObisposRoute,
-  OrganizacionesRoute: OrganizacionesRoute,
   PionerosRoute: PionerosRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   VideosRoute: VideosRoute,

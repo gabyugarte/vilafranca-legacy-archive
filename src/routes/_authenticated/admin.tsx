@@ -561,7 +561,8 @@ function ImageUploader({ value, onChange }: { value: string; onChange: (url: str
     setErr(null);
     try {
       const ext = file.name.split(".").pop() || "jpg";
-      const path = `${new Date().getFullYear()}/${crypto.randomUUID()}.${ext}`;
+      const uniqueId = `${Date.now()}-${Math.random().toString(36).slice(2, 10)}`;
+      const path = `${new Date().getFullYear()}/${uniqueId}.${ext}`;
       const { error: upErr } = await supabase.storage.from("media").upload(path, file, {
         cacheControl: "3600",
         upsert: false,

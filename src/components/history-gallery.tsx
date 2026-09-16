@@ -1,8 +1,14 @@
 import { useState } from "react";
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
 
+type GalleryImage = {
+  image_url: string;
+  title?: string | null;
+  caption?: string | null;
+};
+
 type HistoryGalleryProps = {
-  images: string[];
+  images: GalleryImage[];
   title?: string;
 };
 
@@ -10,26 +16,31 @@ export function HistoryGallery({
   images,
   title,
 }: HistoryGalleryProps) {
-    const [selected, setSelected] = useState<number | null>(null);
-    const previousImage = () => {
-  if (selected === null) return;
+  const [selected, setSelected] = useState<number | null>(null);
 
-  setSelected(
-    selected === 0
-      ? images.length - 1
-      : selected - 1
-  );
-};
+  const previousImage = () => {
+    if (selected === null) return;
 
-const nextImage = () => {
-  if (selected === null) return;
+    setSelected(
+      selected === 0
+        ? images.length - 1
+        : selected - 1,
+    );
+  };
 
-  setSelected(
-    selected === images.length - 1
-      ? 0
-      : selected + 1
-  );
-};
+  const nextImage = () => {
+    if (selected === null) return;
+
+    setSelected(
+      selected === images.length - 1
+        ? 0
+        : selected + 1,
+    );
+  };
+
+  const selectedImage =
+    selected !== null ? images[selected] : null;
+
   return (
     <div className="mt-10">
       {title && (
@@ -38,67 +49,115 @@ const nextImage = () => {
         </h4>
       )}
 
-<div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-  {images.map((image, index) => (
-    <div
-      key={image}
-      className="overflow-hidden rounded-2xl shadow-md transition duration-300 hover:shadow-xl"
-    >
-      <img
-        src={image}
-        loading="lazy"
-        alt={title ?? "Historia del Barrio Vilafranca"}
-        onClick={() => setSelected(index)}
-        className="h-64 w-full cursor-pointer object-cover transition duration-500 hover:scale-105"
-      />
-    </div>
-  ))}
-</div>
+      <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        {images.map((image, index) => (
+          <div
+            key={image.image_url}
+            className="overflow-hidden rounded-2xl bg-card shadow-md transition duration-300 hover:-translate-y-1 hover:shadow-xl"
+          >
+            <img
+              src={image.image_url}
+              loading="lazy"
+              alt={
+                image.title ??
+                title ??
+                "Historia del Barrio Vilafranca"
+              }
+              onClick={() => setSelected(index)}
+              className="h-64 w-full cursor-pointer object-cover transition duration-500 hover:scale-105"
+            />
 
-{selected !== null && (
-  <div
-    className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 p-6"
-    onClick={() => setSelected(null)}
-  >
-    {/* Botón cerrar */}
-    <button
-      onClick={() => setSelected(null)}
-      className="absolute right-6 top-6 rounded-full bg-white/10 p-3 text-white transition hover:bg-white/20"
-    >
-      <X size={28} />
-    </button>
+            {(image.title || image.caption) && (
+              <div className="p-4">
+                {image.title && (
+                  <h3 className="font-semibold text-foreground">
+                    {image.title}
+                  </h3>
+                )}
 
-    {/* Flecha izquierda */}
-    <button
-      onClick={(e) => {
-        e.stopPropagation();
-        previousImage();
-      }}
-      className="absolute left-6 rounded-full bg-white/10 p-4 text-white transition hover:bg-white/20"
-    >
-      <ChevronLeft size={34} />
-    </button>
+                {image.caption && (
+                  <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
+                    {image.caption}
+                  </p>
+                )}
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
 
-    {/* Imagen */}
-    <img
-      src={images[selected]}
-      alt={title}
-      className="max-h-[90vh] max-w-[90vw] rounded-2xl shadow-2xl"
-      onClick={(e) => e.stopPropagation()}
-    />
+      {selectedImage && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 p-6"
+          onClick={() => setSelected(null)}
+        >
+          {/* Botón cerrar */}
+          <button
+            onClick={() => setSelected(null)}
+            className="absolute right-6 top-6 rounded-full bg-white/10 p-3 text-white transition hover:bg-white/20"
+            aria-label="Cerrar"
+          >
+            <X size={28} />
+          </button>
 
-    {/* Flecha derecha */}
-    <button
-      onClick={(e) => {
-        e.stopPropagation();
-        nextImage();
-      }}
-      className="absolute right-6 rounded-full bg-white/10 p-4 text-white transition hover:bg-white/20"
-    >
-      <ChevronRight size={34} />
-    </button>
-  </div>
-)}
+          {/* Flecha izquierda */}
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              previousImage();
+            }}
+            className="absolute left-6 rounded-full bg-white/10 p-4 text-white transition hover:bg-white/20"
+            aria-label="Fotografía anterior"
+          >
+            <ChevronLeft size={34} />
+          </button>
+
+          <div
+            className="flex max-h-[90vh] max-w-[90vw] flex-col items-center"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Imagen */}
+            <img
+              src={selectedImage.image_url}
+              alt={
+                selectedImage.title ??
+                title ??
+                "Historia del Barrio Vilafranca"
+              }
+              className="max-h-[75vh] max-w-[90vw] rounded-2xl shadow-2xl"
+            />
+
+            {/* Información */}
+            {(selectedImage.title || selectedImage.caption) && (
+              <div className="mt-4 max-w-3xl text-center text-white">
+                {selectedImage.title && (
+                  <h3 className="text-lg font-semibold">
+                    {selectedImage.title}
+                  </h3>
+                )}
+
+                {selectedImage.caption && (
+                  <p className="mt-1 text-sm leading-relaxed text-white/80">
+                    {selectedImage.caption}
+                  </p>
+                )}
+              </div>
+            )}
+          </div>
+
+          {/* Flecha derecha */}
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              nextImage();
+            }}
+            className="absolute right-6 rounded-full bg-white/10 p-4 text-white transition hover:bg-white/20"
+            aria-label="Fotografía siguiente"
+          >
+            <ChevronRight size={34} />
+          </button>
+        </div>
+      )}
     </div>
   );
 }
