@@ -120,7 +120,30 @@ if (block.type === "text") {
 }
 
           {/* Galería */}
-{/* Galería */}
+if (block.type === "image") {
+  if (!block.content) {
+    return null;
+  }
+
+  return (
+    <section key={block.id} className="my-10">
+      <img
+        src={block.content}
+        alt={
+          block.caption ??
+          "Imagen de la historia del Barrio Vilafranca"
+        }
+        className="mx-auto max-h-[600px] w-full rounded-2xl object-contain shadow-md"
+      />
+
+      {block.caption && (
+        <p className="mt-3 text-center text-sm text-muted-foreground">
+          {block.caption}
+        </p>
+      )}
+    </section>
+  );
+}
 if (block.type === "gallery") {
   let images: string[] = [];
   let description = "";

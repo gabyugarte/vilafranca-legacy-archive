@@ -1,7 +1,7 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Loader2, Plus, Trash2 } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ImageUploader } from "@/components/admin/ImageUploader";
 import { DocumentUploader } from "@/components/admin/DocumentUploader";
 
@@ -58,7 +58,11 @@ export function HistoryBlocksEditor({
   const [editingDescription, setEditingDescription] = useState("");
   const [editingType, setEditingType] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
+  const [draggedBlockId, setDraggedBlockId] = useState<string | null>(null);
+  const [orderedBlocks, setOrderedBlocks] = useState<any[]>([]);
   const queryClient = useQueryClient();
+  
+
 
   const { data: blocks, isLoading } = useQuery({
     queryKey: ["history-blocks", chapterId],
@@ -75,6 +79,13 @@ export function HistoryBlocksEditor({
       return data;
     },
   });
+
+  useEffect(() => {
+  if (blocks) {
+    setOrderedBlocks(blocks);
+  }
+}, [blocks]);
+
 
     async function addTextBlock() {
     const { data, error } = await supabase
@@ -310,13 +321,79 @@ const { error } = await supabase
   await queryClient.invalidateQueries({
     queryKey: ["history-blocks", chapterId],
   });
+  await queryClient.invalidateQueries({
+  queryKey: ["history-chapter", chapterId],
+});
 
   if (editingId === id) {
     setEditingId(null);
     setEditingContent("");
   }
 }
+function handleDragStart(id: string) {
+  setDraggedBlockId(id);
+}
 
+function handleDragOver(event: React.DragEvent<HTMLDivElement>) {
+  event.preventDefault();
+}
+
+async function handleDrop(targetId: string) {
+  if (!draggedBlockId || draggedBlockId === targetId) {
+    setDraggedBlockId(null);
+    return;
+  }
+
+  const currentBlocks = [...orderedBlocks];
+
+  const draggedIndex = currentBlocks.findIndex(
+    (block) => block.id === draggedBlockId,
+  );
+
+  const targetIndex = currentBlocks.findIndex(
+    (block) => block.id === targetId,
+  );
+
+  if (draggedIndex === -1 || targetIndex === -1) {
+    setDraggedBlockId(null);
+    return;
+  }
+
+  const [draggedBlock] = currentBlocks.splice(draggedIndex, 1);
+
+  currentBlocks.splice(targetIndex, 0, draggedBlock);
+
+  setOrderedBlocks(currentBlocks);
+  setDraggedBlockId(null);
+
+  const updates = currentBlocks.map((block, index) =>
+    supabase
+      .from("history_blocks")
+      .update({
+        order_index: index + 1,
+      })
+      .eq("id", block.id),
+  );
+
+  const results = await Promise.all(updates);
+
+  const failedUpdate = results.find((result) => result.error);
+
+  if (failedUpdate?.error) {
+    alert(
+      `No se pudo guardar el nuevo orden: ${failedUpdate.error.message}`,
+    );
+    return;
+  }
+
+  await queryClient.invalidateQueries({
+    queryKey: ["history-blocks", chapterId],
+  });
+
+  await queryClient.invalidateQueries({
+    queryKey: ["history-chapter", chapterId],
+  });
+}
   return (
     <div className="space-y-6">
 
@@ -409,11 +486,23 @@ const { error } = await supabase
       ) : (
 
         <div className="space-y-4">
-{blocks?.map((block) => (
+{orderedBlocks.map((block) => (
   <div
     key={block.id}
-    className="rounded-xl border p-4"
+    draggable
+    onDragStart={() => handleDragStart(block.id)}
+    onDragOver={handleDragOver}
+    onDrop={() => handleDrop(block.id)}
+    className={`rounded-xl border p-4 transition ${
+      draggedBlockId === block.id
+        ? "opacity-50"
+        : ""
+    }`}
   >
+<div className="mb-3 flex items-center gap-2 text-xs text-muted-foreground">
+  <span className="cursor-grab text-lg">☰</span>
+  <span>Arrastra para cambiar el orden</span>
+</div>
 <div className="mt-2">
 
 {block.type === "image" ? (
@@ -501,13 +590,7 @@ const { error } = await supabase
 
   block.content ? (
     (() => {
-      let galleryImages: string[] = [];
-
-      try {
-        galleryImages = JSON.parse(block.content);
-      } catch {
-        galleryImages = [];
-      }
+      const galleryImages = parseGalleryContent(block.content).images;
 
       return galleryImages.length > 0 ? (
         <div className="space-y-3">
@@ -522,8 +605,8 @@ const { error } = await supabase
 
           <div className="grid grid-cols-2 gap-3">
 
-            {galleryImages.map((url, index) => (
-              <div
+{galleryImages.map((url: string, index: number) => (
+                <div
                 key={`${url}-${index}`}
                 className="overflow-hidden rounded-xl border bg-muted/20"
               >

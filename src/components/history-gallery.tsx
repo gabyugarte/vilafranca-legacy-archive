@@ -8,7 +8,7 @@ type GalleryImage = {
 };
 
 type HistoryGalleryProps = {
-  images: GalleryImage[];
+  images: (string | GalleryImage)[];
   title?: string;
 };
 
@@ -18,12 +18,18 @@ export function HistoryGallery({
 }: HistoryGalleryProps) {
   const [selected, setSelected] = useState<number | null>(null);
 
+  const normalizedImages: GalleryImage[] = images.map((image) =>
+    typeof image === "string"
+      ? { image_url: image }
+      : image,
+  );
+
   const previousImage = () => {
     if (selected === null) return;
 
     setSelected(
       selected === 0
-        ? images.length - 1
+        ? normalizedImages.length - 1
         : selected - 1,
     );
   };
@@ -32,14 +38,14 @@ export function HistoryGallery({
     if (selected === null) return;
 
     setSelected(
-      selected === images.length - 1
+      selected === normalizedImages.length - 1
         ? 0
         : selected + 1,
     );
   };
 
   const selectedImage =
-    selected !== null ? images[selected] : null;
+    selected !== null ? normalizedImages[selected] : null;
 
   return (
     <div className="mt-10">
@@ -50,9 +56,9 @@ export function HistoryGallery({
       )}
 
       <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-        {images.map((image, index) => (
+        {normalizedImages.map((image, index) => (
           <div
-            key={image.image_url}
+            key={`${image.image_url}-${index}`}
             className="overflow-hidden rounded-2xl bg-card shadow-md transition duration-300 hover:-translate-y-1 hover:shadow-xl"
           >
             <img
@@ -116,7 +122,6 @@ export function HistoryGallery({
             className="flex max-h-[90vh] max-w-[90vw] flex-col items-center"
             onClick={(e) => e.stopPropagation()}
           >
-            {/* Imagen */}
             <img
               src={selectedImage.image_url}
               alt={
@@ -127,7 +132,6 @@ export function HistoryGallery({
               className="max-h-[75vh] max-w-[90vw] rounded-2xl shadow-2xl"
             />
 
-            {/* Información */}
             {(selectedImage.title || selectedImage.caption) && (
               <div className="mt-4 max-w-3xl text-center text-white">
                 {selectedImage.title && (
