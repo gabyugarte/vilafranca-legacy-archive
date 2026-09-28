@@ -4,7 +4,6 @@ import { useState } from "react";
 import { PageHeader } from "@/components/page-header";
 import { Gallery } from "@/components/gallery";
 import { bishopsQuery } from "@/lib/queries.functions";
-import { UserCircle2 } from "lucide-react";
 
 
 export const Route = createFileRoute("/obispos")({
@@ -45,6 +44,7 @@ function BishopsPage() {
   const { data: bishops } = useSuspenseQuery(bishopsQuery);
 
   const [openHistory, setOpenHistory] = useState<string | null>(null);
+  const [openBio, setOpenBio] = useState<string | null>(null);
 
 const currentBishopId =
   [...bishops]
@@ -115,14 +115,31 @@ const currentBishopId =
             </div>
           </div>
 
-          <UserCircle2 className="h-12 w-12 text-primary/40" />
         </div>
 
-        {b.bio && (
-          <p className="mt-8 text-lg leading-8 text-foreground/80">
-            {b.bio}
-          </p>
-        )}
+{b.bio && (
+  <div className="mt-8">
+    <p
+className={`whitespace-pre-line text-lg leading-8 text-foreground/80 ${
+  openBio !== b.id ? "line-clamp-5" : ""
+}`}
+    >
+      {b.bio}
+    </p>
+
+    {b.bio.length > 350 && (
+      <button
+        type="button"
+        onClick={() =>
+          setOpenBio(openBio === b.id ? null : b.id)
+        }
+        className="mt-3 text-sm font-medium text-primary transition-colors hover:underline"
+      >
+        {openBio === b.id ? "Mostrar menos ↑" : "Mostrar más ↓"}
+      </button>
+    )}
+  </div>
+)}
 
 {b.bishop_counselor_periods?.length > 0 ? (
   (() => {

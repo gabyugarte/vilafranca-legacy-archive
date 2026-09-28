@@ -34,7 +34,7 @@ const { data, error } = await supabase
     bishop_counselor_periods (*)
   `)
   .order("start_date", {
-    ascending: true,
+    ascending: false,
     nullsFirst: false,
   });
 
