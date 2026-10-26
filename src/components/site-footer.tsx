@@ -103,7 +103,7 @@ export function SiteFooter() {
   <p className="mt-2 w-full text-center text-xs lg:text-right">
     Sitio web desarrollado por{" "}
     <a
-      href="https://gabyugarte.github.io/"
+      href="https://gabrielaugarte.vercel.app/"
       target="_blank"
       rel="noopener noreferrer"
       className="font-medium text-foreground transition-colors hover:text-primary"
