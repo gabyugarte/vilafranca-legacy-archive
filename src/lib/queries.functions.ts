@@ -144,7 +144,7 @@ export const organizationsQuery = queryOptions({
   queryFn: () => fetchOrganizations(),
 });
 export const fetchOrganizationBySlug = createServerFn({ method: "GET" })
-  .inputValidator((slug: string) => slug)
+  .validator((slug: string) => slug)
   .handler(async ({ data: slug }) => {
     const supabase = serverClient();
 
@@ -164,7 +164,7 @@ export const fetchOrganizationBySlug = createServerFn({ method: "GET" })
     queryFn: () => fetchOrganizationBySlug({ data: slug }),
   });
 export const fetchOrganizationGallery = createServerFn({ method: "GET" })
-  .inputValidator((organizationId: string) => organizationId)
+  .validator((organizationId: string) => organizationId)
   .handler(async ({ data: organizationId }) => {
     const supabase = serverClient();
 
