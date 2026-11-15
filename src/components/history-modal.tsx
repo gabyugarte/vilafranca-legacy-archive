@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { TextField } from "@/components/admin/TextField";
 import { TextAreaField } from "@/components/admin/TextAreaField";
@@ -18,15 +18,19 @@ type HistoryModalProps = {
   onSaved: () => void;
 };
 
-export function HistoryModal({
-  chapter,
-  onClose,
-  onSaved,
-}: HistoryModalProps) {
-
-const [form, setForm] =
-  useState<Partial<HistoryRow>>(chapter);
+export function HistoryModal({ chapter, onClose, onSaved }: HistoryModalProps) {
+  const [form, setForm] = useState<Partial<HistoryRow>>(chapter);
   const [saving, setSaving] = useState(false);
+
+  useEffect(() => {
+    console.log("DIAGNÓSTICO: HistoryModal se ha montado");
+
+    return () => {
+      console.log("DIAGNÓSTICO: HistoryModal se ha desmontado");
+    };
+  }, []);
+
+  // Aquí continúa tu función save()
 
 async function save(e: React.FormEvent) {
   e.preventDefault();

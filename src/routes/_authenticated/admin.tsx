@@ -24,11 +24,18 @@ type Tab =
   | "eventos"
   | "galeria"
   | "obispos"
-  | "historia";function AdminPage() {
+  | "historia";
+  function AdminPage() {
   const navigate = useNavigate();
   const { isAdmin, session, loading } = useIsAdmin();
   const [tab, setTab] = useState<Tab>("moderacion");
+  useEffect(() => {
+  console.log("DIAGNÓSTICO: AdminPage se ha montado");
 
+  return () => {
+    console.log("DIAGNÓSTICO: AdminPage se ha desmontado");
+  };
+}, []);
   useEffect(() => {
   if (!loading && !session) {
     navigate({ to: "/auth", search: { next: "" } });

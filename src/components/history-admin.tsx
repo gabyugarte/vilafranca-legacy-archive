@@ -1,5 +1,5 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import {
   Loader2,
@@ -13,6 +13,13 @@ import { HistoryModal } from "@/components/history-modal";
 
 
 export function HistoryAdmin() {
+  useEffect(() => {
+  console.log("DIAGNÓSTICO: HistoryAdmin se ha montado");
+
+  return () => {
+    console.log("DIAGNÓSTICO: HistoryAdmin se ha desmontado");
+  };
+}, []);
 const qc = useQueryClient();
 const [editing, setEditing] = useState<any | null>(null);
   const { data: chapters, isLoading } = useQuery({
@@ -293,13 +300,24 @@ async function moveChapter(
 
 </div>
       )}
-
+{/* 
     {editing && (
       <HistoryModal
         chapter={editing}
         onClose={() => setEditing(null)}
         onSaved={async () => {
-          setEditing(null);
+          setEditing(null); */}
+
+          {editing && (
+  <HistoryModal
+    chapter={editing}
+    onClose={() => {
+      console.log("DIAGNÓSTICO: se ejecutó onClose");
+      setEditing(null);
+    }}
+    onSaved={async () => {
+      console.log("DIAGNÓSTICO: se ejecutó onSaved");
+      setEditing(null);
 
           await qc.invalidateQueries({
             queryKey: ["admin", "history"],

@@ -19,31 +19,43 @@ export function useSession() {
 
   return { session, loading };
 }
-
 export function useIsAdmin() {
   const { session, loading } = useSession();
   const [isAdmin, setIsAdmin] = useState(false);
   const [checking, setChecking] = useState(true);
 
+  // Identificamos al usuario por su ID, no por el objeto session completo.
+  const userId = session?.user.id ?? null;
+
   useEffect(() => {
     if (loading) return;
-    if (!session) {
+
+    if (!userId) {
       setIsAdmin(false);
       setChecking(false);
       return;
     }
+
     setChecking(true);
+    let active = true;
+
     supabase
       .from("user_roles")
       .select("role")
-      .eq("user_id", session.user.id)
+      .eq("user_id", userId)
       .eq("role", "admin")
       .maybeSingle()
-      .then(({ data }) => {
-        setIsAdmin(!!data);
+      .then(({ data, error }) => {
+        if (!active) return;
+
+        setIsAdmin(!error && !!data);
         setChecking(false);
       });
-  }, [session, loading]);
+
+    return () => {
+      active = false;
+    };
+  }, [userId, loading]);
 
   return { isAdmin, session, loading: loading || checking };
 }
